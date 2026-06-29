@@ -1,0 +1,26 @@
+# Active environment
+.env
+
+# Never commit production secrets
+.env.production
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Django
+media/
+staticfiles/
+
+# Logs
+logs/
+*.log
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
