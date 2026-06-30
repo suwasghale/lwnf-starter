@@ -27,6 +27,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+from .components.installed_apps import INSTALLED_APPS
+from .components.middleware import MIDDLEWARE
+from .components.templates import TEMPLATES
+from .components.passwords import AUTH_PASSWORD_VALIDATORS
 
 # Application definition
 
