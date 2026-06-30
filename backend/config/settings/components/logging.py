@@ -1,29 +1,46 @@
 """
 ===============================================================================
-Logging Configuration
+LWNF Backend Logging Configuration
 ===============================================================================
 
-Centralized logging configuration for the entire project.
+This module centralizes the logging configuration for the entire project.
 
-Logs are separated into:
+Goals
+-----
+- Centralized logging
+- Environment-aware configuration
+- Rotating log files
+- Docker-friendly
+- Production-ready
+- Easy debugging
+- Future support for:
+    * JSON logging
+    * ELK Stack
+    * Grafana Loki
+    * Sentry
+    * OpenTelemetry
 
-- Django
-- Celery
-- Security
-- Errors
+Logging Strategy
+----------------
 
-Future:
+Development
+    Console + Rotating Files
 
-- JSON Logs
-- ELK
-- Loki
-- Grafana
+Production
+    Console (Docker) + Rotating Files
+
+Log Files
+---------
+
+logs/
+│
+├── django.log
+├── celery.log
+├── errors.log
+└── security.log
+
 ===============================================================================
 """
-
-from pathlib import Path
-
-from logging.handlers import RotatingFileHandler
 
 from config.settings.env import BASE_DIR
 from config.settings.env import env
@@ -35,11 +52,12 @@ from config.settings.env import env
 LOG_DIR = BASE_DIR / "logs"
 
 LOG_DIR.mkdir(
+    parents=True,
     exist_ok=True,
 )
 
 # =============================================================================
-# Environment
+# Environment Variables
 # =============================================================================
 
 LOG_LEVEL = env(
@@ -47,9 +65,14 @@ LOG_LEVEL = env(
     default="INFO",
 ).upper()
 
+DB_LOG_LEVEL = env(
+    "DB_LOG_LEVEL",
+    default="WARNING",
+).upper()
+
 LOG_MAX_BYTES = env.int(
     "LOG_MAX_BYTES",
-    default=10 * 1024 * 1024,
+    default=10 * 1024 * 1024,  # 10 MB
 )
 
 LOG_BACKUP_COUNT = env.int(
@@ -58,7 +81,37 @@ LOG_BACKUP_COUNT = env.int(
 )
 
 # =============================================================================
-# Formatter
+# Logger Names
+# =============================================================================
+
+PROJECT_LOGGER = "apps"
+
+DJANGO_LOGGER = "django"
+
+DJANGO_REQUEST_LOGGER = "django.request"
+
+DJANGO_SERVER_LOGGER = "django.server"
+
+DJANGO_SECURITY_LOGGER = "django.security"
+
+DJANGO_DB_LOGGER = "django.db.backends"
+
+CELERY_LOGGER = "celery"
+
+# =============================================================================
+# Log Files
+# =============================================================================
+
+DJANGO_LOG_FILE = LOG_DIR / "django.log"
+
+ERROR_LOG_FILE = LOG_DIR / "errors.log"
+
+CELERY_LOG_FILE = LOG_DIR / "celery.log"
+
+SECURITY_LOG_FILE = LOG_DIR / "security.log"
+
+# =============================================================================
+# Formatter Strings
 # =============================================================================
 
 STANDARD_FORMAT = (
@@ -74,7 +127,7 @@ VERBOSE_FORMAT = (
     "{name:<35} "
     "{module:<20} "
     "{funcName:<25} "
-    "{lineno:<5} "
+    "Line:{lineno:<5} "
     "{message}"
 )
 
@@ -89,6 +142,10 @@ DATE_FORMAT = "%Y-%m-%d %H:%M:%S"
 # =============================================================================
 
 FORMATTERS = {
+    "simple": {
+        "format": SIMPLE_FORMAT,
+        "style": "{",
+    },
     "standard": {
         "format": STANDARD_FORMAT,
         "style": "{",
@@ -99,46 +156,41 @@ FORMATTERS = {
         "style": "{",
         "datefmt": DATE_FORMAT,
     },
-    "simple": {
-        "format": SIMPLE_FORMAT,
-        "style": "{",
-    },
 }
 
 # =============================================================================
 # Filters
 # =============================================================================
 
-FILTERS = {}
-
-# =============================================================================
-# Log Files
-# =============================================================================
-
-DJANGO_LOG_FILE = LOG_DIR / "django.log"
-
-ERROR_LOG_FILE = LOG_DIR / "errors.log"
-
-CELERY_LOG_FILE = LOG_DIR / "celery.log"
-
-SECURITY_LOG_FILE = LOG_DIR / "security.log"
+FILTERS = {
+    # "require_debug_true": {
+    #     "()": "django.utils.log.RequireDebugTrue",
+    # },
+    "require_debug_false": {
+        "()": "django.utils.log.RequireDebugFalse",
+    },
+}
 
 # =============================================================================
 # Handlers
 # =============================================================================
 
 HANDLERS = {
-    # -------------------------------------------------------------------------
-    # Console
-    # -------------------------------------------------------------------------
+    # =========================================================================
+    # Console (Development Only)
+    # =========================================================================
     "console": {
         "class": "logging.StreamHandler",
-        "formatter": "standard",
+        "formatter": "simple",
+        "filters": [
+            "require_debug_true",
+        ],
         "level": LOG_LEVEL,
     },
-    # -------------------------------------------------------------------------
-    # Django
-    # -------------------------------------------------------------------------
+
+    # =========================================================================
+    # Django Application Logs
+    # =========================================================================
     "django_file": {
         "class": "logging.handlers.RotatingFileHandler",
         "filename": DJANGO_LOG_FILE,
@@ -149,9 +201,10 @@ HANDLERS = {
         "encoding": "utf-8",
         "delay": True,
     },
-    # -------------------------------------------------------------------------
-    # Errors
-    # -------------------------------------------------------------------------
+
+    # =========================================================================
+    # Error Logs
+    # =========================================================================
     "error_file": {
         "class": "logging.handlers.RotatingFileHandler",
         "filename": ERROR_LOG_FILE,
@@ -162,9 +215,10 @@ HANDLERS = {
         "encoding": "utf-8",
         "delay": True,
     },
-    # -------------------------------------------------------------------------
-    # Celery
-    # -------------------------------------------------------------------------
+
+    # =========================================================================
+    # Celery Logs
+    # =========================================================================
     "celery_file": {
         "class": "logging.handlers.RotatingFileHandler",
         "filename": CELERY_LOG_FILE,
@@ -175,9 +229,10 @@ HANDLERS = {
         "encoding": "utf-8",
         "delay": True,
     },
-    # -------------------------------------------------------------------------
-    # Security
-    # -------------------------------------------------------------------------
+
+    # =========================================================================
+    # Security Logs
+    # =========================================================================
     "security_file": {
         "class": "logging.handlers.RotatingFileHandler",
         "filename": SECURITY_LOG_FILE,
@@ -189,3 +244,129 @@ HANDLERS = {
         "delay": True,
     },
 }
+
+# =============================================================================
+# Root Logger
+# =============================================================================
+
+ROOT_LOGGER = {
+    "handlers": [
+        "console",
+        "django_file",
+        "error_file",
+    ],
+    "level": LOG_LEVEL,
+}
+
+
+# =============================================================================
+# Loggers
+# =============================================================================
+
+LOGGERS = {
+    # =========================================================================
+    # Django Framework
+    # =========================================================================
+    DJANGO_LOGGER: {
+        "handlers": [
+            "console",
+            "django_file",
+            "error_file",
+        ],
+        "level": LOG_LEVEL,
+        "propagate": False,
+    },
+
+    # =========================================================================
+    # HTTP Requests
+    # =========================================================================
+    DJANGO_REQUEST_LOGGER: {
+        "handlers": [
+            "console",
+            "django_file",
+            "error_file",
+        ],
+        "level": "ERROR",
+        "propagate": False,
+    },
+
+    # =========================================================================
+    # Django Development Server
+    # =========================================================================
+    DJANGO_SERVER_LOGGER: {
+        "handlers": [
+            "console",
+        ],
+        "level": "INFO",
+        "propagate": False,
+    },
+
+    # =========================================================================
+    # Security Events
+    # =========================================================================
+    DJANGO_SECURITY_LOGGER: {
+        "handlers": [
+            "console",
+            "security_file",
+            "error_file",
+        ],
+        "level": "WARNING",
+        "propagate": False,
+    },
+
+    # =========================================================================
+    # Database Queries
+    # =========================================================================
+    DJANGO_DB_LOGGER: {
+        "handlers": [
+            "console",
+            "django_file",
+        ],
+        "level": DB_LOG_LEVEL,
+        "propagate": False,
+    },
+
+    # =========================================================================
+    # Celery
+    # =========================================================================
+    CELERY_LOGGER: {
+        "handlers": [
+            "console",
+            "celery_file",
+        ],
+        "level": LOG_LEVEL,
+        "propagate": False,
+    },
+
+    # =========================================================================
+    # Project Applications
+    # =========================================================================
+    PROJECT_LOGGER: {
+        "handlers": [
+            "console",
+            "django_file",
+            "error_file",
+        ],
+        "level": LOG_LEVEL,
+        "propagate": False,
+    },
+}
+
+
+# =============================================================================
+# Django Logging Configuration
+# =============================================================================
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": FORMATTERS,
+    "filters": FILTERS,
+    "handlers": HANDLERS,
+    "loggers": LOGGERS,
+    "root": ROOT_LOGGER,
+}
+
+INFRASTRUCTURE_LOGGER = "infrastructure"
+
+CORE_LOGGER = "core"
