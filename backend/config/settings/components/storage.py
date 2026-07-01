@@ -13,13 +13,13 @@ Supports:
 ===============================================================================
 """
 
-from config.settings.env import DEBUG, env
+from config.settings.env import env
 
 # =============================================================================
 # Storage Backend Selection
 # =============================================================================
 
-USE_CLOUD_STORAGE = env.bool("USE_CLOUD_STORAGE", default=not DEBUG)
+USE_CLOUD_STORAGE = env.bool("USE_CLOUD_STORAGE", default=env.bool("DEBUG"))
 
 if USE_CLOUD_STORAGE:
     STORAGES = {

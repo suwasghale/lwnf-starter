@@ -2,11 +2,11 @@
 LWNF Backend - CORS Configuration
 """
 
-from config.settings.env import DEBUG, env
+from config.settings.env import env
 
 CORS_ALLOW_ALL_ORIGINS = env.bool(
     "CORS_ALLOW_ALL_ORIGINS",
-    default=DEBUG,
+    default=env.bool("DEBUG", default=True),
 )
 
 CORS_ALLOWED_ORIGINS = env.list(

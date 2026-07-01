@@ -33,3 +33,4 @@ ENV_FILE = ROOT_DIR / ".env"
 
 if ENV_FILE.exists():
     environ.Env.read_env(ENV_FILE)
+    

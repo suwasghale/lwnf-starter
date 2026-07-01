@@ -18,7 +18,7 @@ Features
 ===============================================================================
 """
 
-from config.settings.env import DEBUG, env
+from config.settings.env import env
 
 # =============================================================================
 # Backend Selection
@@ -26,7 +26,7 @@ from config.settings.env import DEBUG, env
 
 EMAIL_BACKEND = (
     "django.core.mail.backends.console.EmailBackend"
-    if DEBUG
+    if env.bool("DEBUG", default=True)
     else env(
         "EMAIL_BACKEND",
         default="django.core.mail.backends.smtp.EmailBackend",

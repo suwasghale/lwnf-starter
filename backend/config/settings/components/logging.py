@@ -60,15 +60,23 @@ LOG_DIR.mkdir(
 # Environment Variables
 # =============================================================================
 
-LOG_LEVEL = env(
-    "LOG_LEVEL",
-    default="INFO",
-).upper()
+LOG_LEVEL = (
+    env(
+        "LOG_LEVEL",
+        default="INFO",
+    )
+    .strip()
+    .upper()
+)
 
-DB_LOG_LEVEL = env(
-    "DB_LOG_LEVEL",
-    default="WARNING",
-).upper()
+DB_LOG_LEVEL = (
+    env(
+        "DB_LOG_LEVEL",
+        default="WARNING",
+    )
+    .strip()
+    .upper()
+)
 
 LOG_MAX_BYTES = env.int(
     "LOG_MAX_BYTES",
@@ -163,9 +171,9 @@ FORMATTERS = {
 # =============================================================================
 
 FILTERS = {
-    # "require_debug_true": {
-    #     "()": "django.utils.log.RequireDebugTrue",
-    # },
+    "require_debug_true": {
+        "()": "django.utils.log.RequireDebugTrue",
+    },
     "require_debug_false": {
         "()": "django.utils.log.RequireDebugFalse",
     },

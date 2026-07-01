@@ -8,6 +8,5 @@ Never used in staging or production.
 """
 from .base import *  # noqa: F401, F403
 
-DEBUG         = True
-SECRET_KEY    = "dev-insecure-key-never-use-in-production-abc123"
+DEBUG         = env.bool("DEBUG")
 ALLOWED_HOSTS = ["*"]
