@@ -289,7 +289,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     REQUIRED_FIELDS: list[str] = []
     
-        # -------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
     # Computed Properties
     # -------------------------------------------------------------------------
 
@@ -313,3 +313,62 @@ class User(AbstractBaseUser, PermissionsMixin):
             2. Email address
         """
         return self.first_name or self.email
+
+    # -------------------------------------------------------------------------
+    # Instance Methods
+    # -------------------------------------------------------------------------
+
+    def clean(self) -> None:
+        """
+        Normalize and validate model data before saving.
+
+        This method is automatically called by `full_clean()`.
+        """
+
+        super().clean()
+
+        if self.email:
+            self.email = self.__class__.objects.normalize_email(self.email)
+
+    def save(self, *args, **kwargs) -> None:
+        """
+        Save the user instance.
+
+        Always perform model validation before persisting
+        the object to the database.
+        """
+
+        self.full_clean()
+
+        super().save(*args, **kwargs)
+
+    def email_user(
+        self,
+        subject: str,
+        message: str,
+        from_email: str | None = None,
+        **kwargs,
+    ) -> None:
+        """
+        Send an email to this user.
+
+        This mirrors Django's default User implementation,
+        making the model compatible with Django's ecosystem.
+        """
+
+        from django.core.mail import send_mail
+
+        send_mail(
+            subject=subject,
+            message=message,
+            from_email=from_email,
+            recipient_list=[self.email],
+            **kwargs,
+        )
+
+    def __str__(self) -> str:
+        """
+        Human-readable representation.
+        """
+
+        return self.full_name or self.email
