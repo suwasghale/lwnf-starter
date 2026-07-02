@@ -372,3 +372,47 @@ class User(AbstractBaseUser, PermissionsMixin):
         """
 
         return self.full_name or self.email
+    
+    # -------------------------------------------------------------------------
+    # Model Metadata
+    # -------------------------------------------------------------------------
+
+    class Meta:
+        """
+        Model metadata.
+        """
+
+        verbose_name = _("User")
+        verbose_name_plural = _("Users")
+
+        ordering = ("-created_at",)
+
+        indexes = [
+            models.Index(
+                fields=["email"],
+                name="user_email_idx",
+            ),
+            models.Index(
+                fields=["is_active"],
+                name="user_active_idx",
+            ),
+            models.Index(
+                fields=["is_verified"],
+                name="user_verified_idx",
+            ),
+            models.Index(
+                fields=["created_at"],
+                name="user_created_idx",
+            ),
+            models.Index(
+                fields=["last_seen"],
+                name="user_last_seen_idx",
+            ),
+        ]
+
+        constraints = [
+            models.UniqueConstraint(
+                fields=["email"],
+                name="user_email_unique",
+            ),
+        ]
