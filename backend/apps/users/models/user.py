@@ -289,4 +289,27 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     REQUIRED_FIELDS: list[str] = []
     
-    
+        # -------------------------------------------------------------------------
+    # Computed Properties
+    # -------------------------------------------------------------------------
+
+    @property
+    def full_name(self) -> str:
+        """
+        Return the user's full name.
+
+        Returns:
+            str: First name and last name combined, with extra whitespace removed.
+        """
+        return f"{self.first_name} {self.last_name}".strip()
+
+    @property
+    def short_name(self) -> str:
+        """
+        Return the preferred short display name.
+
+        Priority:
+            1. First name
+            2. Email address
+        """
+        return self.first_name or self.email
