@@ -389,10 +389,6 @@ class User(AbstractBaseUser, PermissionsMixin):
 
         indexes = [
             models.Index(
-                fields=["email"],
-                name="user_email_idx",
-            ),
-            models.Index(
                 fields=["is_active"],
                 name="user_active_idx",
             ),
@@ -407,12 +403,5 @@ class User(AbstractBaseUser, PermissionsMixin):
             models.Index(
                 fields=["last_seen"],
                 name="user_last_seen_idx",
-            ),
-        ]
-
-        constraints = [
-            models.UniqueConstraint(
-                fields=["email"],
-                name="user_email_unique",
             ),
         ]
