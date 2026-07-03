@@ -14,6 +14,8 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils import timezone
 from timezone_field import TimeZoneField
+from phonenumber_field.modelfields import PhoneNumberField
+
 
 from apps.users.choices import GenderChoices
 from apps.users.models.user import User
@@ -75,10 +77,9 @@ class Profile(models.Model):
     # Contact Information
     # ------------------------------------------------------------------
 
-    phone_number = models.CharField(
-        max_length=30,
+    phone_number = PhoneNumberField(
         blank=True,
-        verbose_name="Phone number",
+        region="FR",
     )
 
     # ------------------------------------------------------------------

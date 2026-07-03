@@ -112,7 +112,6 @@ class AddressTypeChoices(models.TextChoices):
     SHIPPING = "shipping", "Shipping"
     OTHER = "other", "Other"
 
-
 # =============================================================================
 # Notification Channel
 # =============================================================================
