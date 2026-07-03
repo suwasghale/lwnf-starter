@@ -168,10 +168,10 @@ class UserAdmin(BaseUserAdmin):
 
     filter_horizontal = (
         "groups",
-        "user_permissions",
+        # "user_permissions",
     )
 
     autocomplete_fields = (
         "groups",
-        "user_permissions",
+        # "user_permissions",
     )
