@@ -24,7 +24,7 @@ class ProfileAdmin(admin.ModelAdmin):
         "user",
         "phone_number",
         "gender",
-        "country",
+        "nationality",
         "preferred_language",
         "timezone",
         "created_at",
@@ -59,7 +59,7 @@ class ProfileAdmin(admin.ModelAdmin):
     list_filter = (
         "gender",
         "preferred_language",
-        "country",
+        "nationality",
         "created_at",
     )
 
@@ -114,7 +114,7 @@ class ProfileAdmin(admin.ModelAdmin):
             {
                 "fields": (
                     "phone_number",
-                    "country",
+                    "nationality",
                 ),
             },
         ),
@@ -123,18 +123,6 @@ class ProfileAdmin(admin.ModelAdmin):
             {
                 "fields": (
                     "biography",
-                ),
-            },
-        ),
-        (
-            "Social Links",
-            {
-                "fields": (
-                    "website",
-                    "linkedin_url",
-                    "facebook_url",
-                    "instagram_url",
-                    "github_url",
                 ),
             },
         ),

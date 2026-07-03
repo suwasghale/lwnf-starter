@@ -13,6 +13,7 @@ from datetime import date
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils import timezone
+from django_countries.fields import CountryField
 from timezone_field import TimeZoneField
 from phonenumber_field.modelfields import PhoneNumberField
 
@@ -72,6 +73,8 @@ class Profile(models.Model):
         null=True,
         verbose_name="Date of birth",
     )
+    
+    nationality = CountryField(...)
 
     # ------------------------------------------------------------------
     # Contact Information
