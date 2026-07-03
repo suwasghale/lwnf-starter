@@ -4,28 +4,42 @@ Custom manager for EmailVerificationToken.
 
 from __future__ import annotations
 
-from datetime import timedelta
+from typing import TYPE_CHECKING
 
 from django.db import models
 from django.utils import timezone
+
+if TYPE_CHECKING:
+    from apps.users.models import User
+    from apps.users.models.tokens.email_verification import (
+        EmailVerificationToken,
+    )
 
 
 class EmailVerificationTokenManager(
     models.Manager["EmailVerificationToken"]
 ):
     """
-    Custom manager for email verification tokens.
+    Custom manager for EmailVerificationToken.
     """
 
-    def get_queryset(self):
+    def get_queryset(
+        self,
+    ) -> models.QuerySet["EmailVerificationToken"]:
         """
-        Return the default queryset.
+        Return the default queryset with related user loaded.
         """
-        return super().get_queryset().select_related("user")
+        return (
+            super()
+            .get_queryset()
+            .select_related("user")
+        )
 
-    def active(self):
+    def valid(
+        self,
+    ) -> models.QuerySet["EmailVerificationToken"]:
         """
-        Return active verification tokens.
+        Return valid (unused and unexpired) tokens.
         """
         now = timezone.now()
 
@@ -37,9 +51,11 @@ class EmailVerificationTokenManager(
             )
         )
 
-    def expired(self):
+    def expired(
+        self,
+    ) -> models.QuerySet["EmailVerificationToken"]:
         """
-        Return expired verification tokens.
+        Return expired tokens.
         """
         return (
             self.get_queryset()
@@ -48,9 +64,11 @@ class EmailVerificationTokenManager(
             )
         )
 
-    def used(self):
+    def used(
+        self,
+    ) -> models.QuerySet["EmailVerificationToken"]:
         """
-        Return used verification tokens.
+        Return used tokens.
         """
         return (
             self.get_queryset()
@@ -59,9 +77,11 @@ class EmailVerificationTokenManager(
             )
         )
 
-    def unused(self):
+    def unused(
+        self,
+    ) -> models.QuerySet["EmailVerificationToken"]:
         """
-        Return unused verification tokens.
+        Return unused tokens.
         """
         return (
             self.get_queryset()
@@ -70,25 +90,70 @@ class EmailVerificationTokenManager(
             )
         )
 
+    def for_user(
+        self,
+        user: User,
+    ) -> models.QuerySet["EmailVerificationToken"]:
+        """
+        Return all verification tokens belonging to a user.
+        """
+        return (
+            self.get_queryset()
+            .filter(user=user)
+        )
+
+    def latest_for_user(
+        self,
+        user: User,
+    ) -> EmailVerificationToken | None:
+        """
+        Return the latest verification token for a user.
+        """
+        return (
+            self.for_user(user)
+            .order_by("-created_at")
+            .first()
+        )
+
+    def invalidate_user_tokens(
+        self,
+        user: User,
+    ) -> int:
+        """
+        Mark every valid token for the given user as used.
+
+        Returns:
+            Number of invalidated tokens.
+        """
+        return (
+            self.valid()
+            .filter(user=user)
+            .update(
+                used_at=timezone.now(),
+            )
+        )
+
     def create_token(
         self,
         *,
-        user,
+        user: User,
         token_hash: str,
-        expires_in: timedelta = timedelta(hours=24),
+        expires_at,
         created_ip: str | None = None,
         user_agent: str = "",
-    ):
+    ) -> EmailVerificationToken:
         """
-        Create a verification token.
+        Persist a new email verification token.
 
-        The token_hash must already be hashed.
-        Token generation belongs to the service layer.
+        Notes:
+            - The token must already be hashed.
+            - Expiration must already be calculated.
+            - Token generation belongs to the service layer.
         """
         return self.create(
             user=user,
             token_hash=token_hash,
-            expires_at=timezone.now() + expires_in,
+            expires_at=expires_at,
             created_ip=created_ip,
             user_agent=user_agent,
         )
