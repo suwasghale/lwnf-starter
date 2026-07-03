@@ -1,0 +1,27 @@
+{% extends "emails/base.txt" %}
+
+{% block title %}
+Bienvenue au sein de L.W.N.F
+{% endblock %}
+
+{% block content %}
+
+Bonjour {{ user.first_name|default:user.email }},
+
+Bienvenue au sein de L.W.N.F.
+
+Votre adresse e-mail a été vérifiée avec succès et votre compte est désormais activé.
+
+Vous pouvez dès maintenant accéder à votre espace personnel :
+
+{{ dashboard_url }}
+
+Merci pour votre confiance envers notre association.
+
+Nous espérons vous accompagner durablement dans votre engagement auprès de L.W.N.F.
+
+Bien cordialement,
+
+L'équipe L.W.N.F
+
+{% endblock %}

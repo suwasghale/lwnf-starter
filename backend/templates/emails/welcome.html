@@ -1,0 +1,71 @@
+{% extends "emails/base.html" %}
+
+{% block title %}
+Bienvenue au sein de L.W.N.F
+{% endblock %}
+
+{% block content %}
+
+<p>Bonjour {{ user.first_name|default:user.email }},</p>
+
+<p>
+Nous sommes heureux de vous accueillir au sein de <strong>L.W.N.F</strong>.
+</p>
+
+<p>
+Votre adresse e-mail a été vérifiée avec succès et votre compte est désormais pleinement activé.
+</p>
+
+<p>
+Grâce à votre espace personnel, vous pourrez notamment :
+</p>
+
+<ul style="padding-left:20px; line-height:1.8;">
+
+<li>consulter les actualités de l'association ;</li>
+
+<li>suivre les projets humanitaires en cours ;</li>
+
+<li>effectuer ou gérer vos dons ;</li>
+
+<li>suivre un parrainage si vous devenez parrain ou marraine ;</li>
+
+<li>mettre à jour vos informations personnelles.</li>
+
+</ul>
+
+<p style="margin:40px 0;text-align:center;">
+
+<a href="{{ dashboard_url }}"
+style="
+display:inline-block;
+padding:14px 32px;
+background:#0f172a;
+color:#ffffff;
+text-decoration:none;
+border-radius:8px;
+font-weight:600;
+font-size:16px;
+">
+
+Accéder à mon espace
+
+</a>
+
+</p>
+
+<p>
+Merci de votre confiance et de votre soutien envers notre association.
+Chaque contribution, quelle qu'elle soit, participe à améliorer le quotidien des enfants et des familles que nous accompagnons au Népal.
+</p>
+
+<p>
+Au plaisir de vous compter parmi nos membres et nos partenaires.
+</p>
+
+<p>
+Bien cordialement,<br>
+L'équipe L.W.N.F
+</p>
+
+{% endblock %}
