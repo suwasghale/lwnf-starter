@@ -78,9 +78,7 @@ def find_valid_verification_token(
 # =============================================================================
 
 
-from django.db.models import QuerySet
 
-...
 
 def list_user_verification_tokens(
     *,
