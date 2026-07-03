@@ -1,0 +1,23 @@
+
+{
+    "version": "0.2.0",
+    "configurations": [
+        // django configuration
+        {
+            "name": "Launch Firefox Dev (Django)",
+            "type": "firefox",
+            "request": "launch",
+            "url": "http://127.0.0.1:8000",
+            "reAttach": true
+        },
+        // next.js configuration
+        {
+            "name": "Launch Firefox Dev (Next.js)",
+            "type": "firefox",
+            "request": "launch",
+            "url": "http://localhost:3000",
+            "reAttach": true
+        }
+    ]
+}
+

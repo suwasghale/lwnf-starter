@@ -9,7 +9,7 @@ Responsibilities:
 """
 
 from pathlib import Path
-
+import os
 import environ
 
 # ------------------------------------------------------------------------------
@@ -28,9 +28,7 @@ BASE_DIR = ROOT_DIR
 
 env = environ.Env()
 
-# Load active environment file
-ENV_FILE = ROOT_DIR / ".env"
-
-if ENV_FILE.exists():
-    environ.Env.read_env(ENV_FILE)
-    
+if "prod" in os.environ.get("DJANGO_SETTINGS_MODULE", ""):
+    env.read_env(ROOT_DIR / ".env.production")
+else:
+    env.read_env(ROOT_DIR / ".env")
