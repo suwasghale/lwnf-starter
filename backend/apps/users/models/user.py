@@ -1,160 +1,3 @@
-""" 
-
-User
-│
-├── UUID primary key
-├── Email login
-├── First name
-├── Last name
-├── Active
-├── Staff
-├── Superuser
-├── Verified
-├── Last login
-├── Last seen
-├── Date joined
-├── Created at
-├── Updated at
-│
-├── UserManager
-│
-├── Properties
-│     ├── full_name
-│     ├── short_name
-│
-├── Methods
-│     ├── clean()
-│     ├── save()
-│     ├── email_user()
-│     ├── __str__()
-│
-├── Meta
-│     ├── ordering
-│     ├── indexes
-│     ├── constraints
-│     ├── verbose names
-│
-└── Type hints
-
-Authentication
---------------
-id
-email
-password
-
-Personal
---------
-first_name
-last_name
-
-Authorization
--------------
-is_active
-is_staff
-is_superuser
-is_verified
-
-Tracking
---------
-last_login
-last_seen
-date_joined
-created_at
-updated_at
-
-Imports: 
-Standard Library
-
-↓
-
-Django
-
-↓
-
-Third Party
-
-↓
-
-Local Project
-
-apps/users/models/user.py
-
-──────────────────────────────
-
-1. Module docstring               ⭐
-
-2. Imports                        ⭐
-
-3. User class definition          ⭐
-
-4. Identity fields
-
-5. Authentication fields
-
-6. Personal fields
-
-7. Permission fields
-
-8. Activity fields
-
-9. Timestamp fields
-
-10. Django auth configuration
-
-11. Properties
-
-12. Instance methods
-
-13. Meta
-
-14. End of file review
-
-"""
-
-"""
-LWNF Backend
-
-Custom User Model
-
-This module defines the project's primary authentication model.
-
-Authentication Strategy
------------------------
-- UUID primary key
-- Email-based authentication
-- Custom UserManager
-- No username field
-
-Responsibilities
-----------------
-- Store authentication credentials.
-- Store essential identity information.
-- Manage permissions and account status.
-- Provide helper properties and instance methods.
-
-Non-Responsibilities
---------------------
-The following belong to other models or services:
-
-- User profile
-- Addresses
-- Avatar
-- Social accounts
-- Email verification workflow
-- Registration business logic
-- Authentication services
-- JWT generation
-- Password reset workflow
-
-Related Modules
----------------
-- models.managers
-- models.profile
-- models.address
-- services.authentication
-- services.registration
-"""
-
 from __future__ import annotations
 
 import uuid
@@ -405,3 +248,161 @@ class User(AbstractBaseUser, PermissionsMixin):
                 name="user_last_seen_idx",
             ),
         ]
+
+
+""" 
+
+User
+│
+├── UUID primary key
+├── Email login
+├── First name
+├── Last name
+├── Active
+├── Staff
+├── Superuser
+├── Verified
+├── Last login
+├── Last seen
+├── Date joined
+├── Created at
+├── Updated at
+│
+├── UserManager
+│
+├── Properties
+│     ├── full_name
+│     ├── short_name
+│
+├── Methods
+│     ├── clean()
+│     ├── save()
+│     ├── email_user()
+│     ├── __str__()
+│
+├── Meta
+│     ├── ordering
+│     ├── indexes
+│     ├── constraints
+│     ├── verbose names
+│
+└── Type hints
+
+Authentication
+--------------
+id
+email
+password
+
+Personal
+--------
+first_name
+last_name
+
+Authorization
+-------------
+is_active
+is_staff
+is_superuser
+is_verified
+
+Tracking
+--------
+last_login
+last_seen
+date_joined
+created_at
+updated_at
+
+Imports: 
+Standard Library
+
+↓
+
+Django
+
+↓
+
+Third Party
+
+↓
+
+Local Project
+
+apps/users/models/user.py
+
+──────────────────────────────
+
+1. Module docstring               ⭐
+
+2. Imports                        ⭐
+
+3. User class definition          ⭐
+
+4. Identity fields
+
+5. Authentication fields
+
+6. Personal fields
+
+7. Permission fields
+
+8. Activity fields
+
+9. Timestamp fields
+
+10. Django auth configuration
+
+11. Properties
+
+12. Instance methods
+
+13. Meta
+
+14. End of file review
+
+"""
+
+"""
+LWNF Backend
+
+Custom User Model
+
+This module defines the project's primary authentication model.
+
+Authentication Strategy
+-----------------------
+- UUID primary key
+- Email-based authentication
+- Custom UserManager
+- No username field
+
+Responsibilities
+----------------
+- Store authentication credentials.
+- Store essential identity information.
+- Manage permissions and account status.
+- Provide helper properties and instance methods.
+
+Non-Responsibilities
+--------------------
+The following belong to other models or services:
+
+- User profile
+- Addresses
+- Avatar
+- Social accounts
+- Email verification workflow
+- Registration business logic
+- Authentication services
+- JWT generation
+- Password reset workflow
+
+Related Modules
+---------------
+- models.managers
+- models.profile
+- models.address
+- services.authentication
+- services.registration
+"""
