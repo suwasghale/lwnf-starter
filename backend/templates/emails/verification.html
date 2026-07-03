@@ -1,0 +1,61 @@
+{% extends "emails/base.html" %}
+
+{% block title %}
+Vérification de votre adresse e-mail
+{% endblock %}
+
+{% block content %}
+
+<p>Bonjour {{ user.first_name|default:user.email }},</p>
+
+<p>
+Merci d'avoir créé un compte sur <strong>L.W.N.F</strong>.
+</p>
+
+<p>
+Afin de sécuriser votre compte, nous vous invitons à confirmer votre adresse e-mail en cliquant sur le bouton ci-dessous.
+</p>
+
+<p style="margin:40px 0;text-align:center;">
+
+<a href="{{ verification_url }}"
+style="
+display:inline-block;
+padding:14px 32px;
+background:#0f172a;
+color:#ffffff;
+text-decoration:none;
+border-radius:8px;
+font-weight:600;
+font-size:16px;
+">
+
+Vérifier mon adresse e-mail
+
+</a>
+
+</p>
+
+<p>
+Si le bouton ne fonctionne pas, copiez et collez le lien suivant dans votre navigateur :
+</p>
+
+<p style="word-break:break-word;">
+{{ verification_url }}
+</p>
+
+<p>
+Pour votre sécurité, ce lien expirera dans
+<strong>{{ expiration_hours }} heures</strong>.
+</p>
+
+<p>
+Si vous n'êtes pas à l'origine de cette demande, vous pouvez ignorer cet e-mail en toute sécurité.
+</p>
+
+<p>
+Cordialement,<br>
+L'équipe L.W.N.F
+</p>
+
+{% endblock %}

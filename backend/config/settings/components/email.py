@@ -54,7 +54,12 @@ EMAIL_TIMEOUT = env.int("EMAIL_TIMEOUT", default=30)
 
 DEFAULT_FROM_EMAIL = env(
     "DEFAULT_FROM_EMAIL",
-    default="noreply@lwnf.org",
+    default="no-reply@lwnf.org",
+)
+
+EMAIL_SITE_NAME = env(
+    "EMAIL_SITE_NAME",
+    default="L.W.N.F",
 )
 
 SERVER_EMAIL = env(

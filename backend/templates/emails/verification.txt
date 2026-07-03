@@ -1,0 +1,25 @@
+{% extends "emails/base.txt" %}
+
+{% block title %}
+Vérification de votre adresse e-mail
+{% endblock %}
+
+{% block content %}
+
+Bonjour {{ user.first_name|default:user.email }},
+
+Merci d'avoir créé un compte sur L.W.N.F.
+
+Veuillez confirmer votre adresse e-mail en utilisant le lien suivant :
+
+{{ verification_url }}
+
+Ce lien expirera dans {{ expiration_hours }} heures.
+
+Si vous n'êtes pas à l'origine de cette demande, ignorez simplement cet e-mail.
+
+Cordialement,
+
+L'équipe L.W.N.F
+
+{% endblock %}
