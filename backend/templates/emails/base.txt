@@ -1,0 +1,23 @@
+{% block title %}
+L.W.N.F
+{% endblock %}
+
+========================================================
+
+L.W.N.F
+Les World Népal France
+
+========================================================
+
+{% block content %}
+{% endblock %}
+
+--------------------------------------------------------
+
+Association L.W.N.F
+
+Ce message a été envoyé automatiquement.
+Merci de ne pas répondre directement à cet e-mail.
+
+© {% now "Y" %} L.W.N.F
+Tous droits réservés.

@@ -15,3 +15,8 @@ PASSWORD_RESET_TOKEN_LIFETIME = timedelta(
         default=30,
     )
 )
+
+FRONTEND_URL = env(
+    "FRONTEND_URL",
+    default="http://localhost:3000",
+)
