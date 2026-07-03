@@ -21,6 +21,7 @@ from pathlib import Path
 from config.settings.env import *
 
 # Components
+from config.settings.components.auth import *
 from config.settings.components.installed_apps import *
 from config.settings.components.middleware import *
 from config.settings.components.templates import *
