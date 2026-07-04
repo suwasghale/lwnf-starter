@@ -10,12 +10,10 @@ from django.db import models
 
 from ..querysets import EmailVerificationTokenQuerySet
 
-if TYPE_CHECKING:
-    from apps.users.models import User
-    from apps.users.models.tokens.email_verification import (
-        EmailVerificationToken,
-    )
-
+from apps.users.typing import (
+    User,
+    EmailVerificationToken,
+)
 
 class EmailVerificationTokenManager(
     models.Manager.from_queryset(

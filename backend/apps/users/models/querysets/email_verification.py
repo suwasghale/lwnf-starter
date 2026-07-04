@@ -9,11 +9,10 @@ from typing import TYPE_CHECKING
 from django.db import models
 from django.utils import timezone
 
-if TYPE_CHECKING:
-    from apps.users.models import User
-    from apps.users.models.tokens.email_verification import (
-        EmailVerificationToken,
-    )
+from apps.users.typing import (
+    User,
+    EmailVerificationToken,
+)
 
 
 class EmailVerificationTokenQuerySet(

@@ -11,11 +11,10 @@ from django.db import models
 
 from ..querysets import PasswordResetTokenQuerySet
 
-if TYPE_CHECKING:
-    from apps.users.models import User
-    from apps.users.models.tokens.password_reset import (
-        PasswordResetToken,
-    )
+from apps.users.typing import (
+    User,
+    PasswordResetToken,
+)
 
 
 class PasswordResetTokenManager(
