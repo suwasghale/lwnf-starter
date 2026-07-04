@@ -1,0 +1,37 @@
+{% extends "emails/base.txt" %}
+
+{% block title %}
+Confirmation de votre don
+{% endblock %}
+
+{% block content %}
+
+Bonjour {{ user.first_name|default:user.email }},
+
+Nous vous remercions pour votre soutien envers L.W.N.F.
+
+Votre don a bien été enregistré.
+
+Référence :
+{{ donation.reference }}
+
+Date :
+{{ donation.date }}
+
+Montant :
+{{ donation.amount }} {{ donation.currency }}
+
+Mode de paiement :
+{{ donation.payment_method }}
+
+Vous pouvez consulter le détail de votre contribution ici :
+
+{{ donation_url }}
+
+Votre générosité contribue directement à soutenir nos projets humanitaires au Népal.
+
+Merci pour votre confiance.
+
+L'équipe L.W.N.F
+
+{% endblock %}

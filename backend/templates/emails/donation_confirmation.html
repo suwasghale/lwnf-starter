@@ -1,0 +1,100 @@
+{% extends "emails/base.html" %}
+
+{% block title %}
+Confirmation de votre don
+{% endblock %}
+
+{% block content %}
+
+<p>Bonjour {{ user.first_name|default:user.email }},</p>
+
+<p>
+Nous vous remercions sincèrement pour votre généreux soutien envers
+<strong>L.W.N.F</strong>.
+</p>
+
+<p>
+Votre don a bien été enregistré et contribuera directement au financement de nos actions humanitaires au Népal.
+</p>
+
+<table
+style="
+width:100%;
+margin:30px 0;
+border-collapse:collapse;
+font-size:15px;
+">
+
+<tr>
+<td style="padding:10px 0;"><strong>Référence</strong></td>
+<td style="padding:10px 0;">{{ donation.reference }}</td>
+</tr>
+
+<tr>
+<td style="padding:10px 0;"><strong>Date</strong></td>
+<td style="padding:10px 0;">{{ donation.date }}</td>
+</tr>
+
+<tr>
+<td style="padding:10px 0;"><strong>Montant</strong></td>
+<td style="padding:10px 0;">
+{{ donation.amount }} {{ donation.currency }}
+</td>
+</tr>
+
+<tr>
+<td style="padding:10px 0;"><strong>Mode de paiement</strong></td>
+<td style="padding:10px 0;">
+{{ donation.payment_method }}
+</td>
+</tr>
+
+</table>
+
+<p>
+Votre soutien nous permet notamment de financer :
+</p>
+
+<ul style="padding-left:20px;line-height:1.8;">
+<li>la scolarisation des enfants ;</li>
+<li>des projets éducatifs ;</li>
+<li>des actions sanitaires ;</li>
+<li>des projets de développement local.</li>
+</ul>
+
+<p>
+Conservez cet e-mail comme confirmation de votre contribution.
+Un reçu officiel pourra être mis à votre disposition si nécessaire.
+</p>
+
+<p style="margin:40px 0;text-align:center;">
+
+<a href="{{ donation_url }}"
+style="
+display:inline-block;
+padding:14px 32px;
+background:#0f172a;
+color:#ffffff;
+text-decoration:none;
+border-radius:8px;
+font-weight:600;
+font-size:16px;
+">
+
+Voir mon don
+
+</a>
+
+</p>
+
+<p>
+Au nom de toute l'équipe et des bénéficiaires de nos actions,
+nous vous remercions chaleureusement pour votre confiance.
+</p>
+
+<p>
+Bien cordialement,<br>
+L'équipe L.W.N.F
+</p>
+
+{% endblock %}
