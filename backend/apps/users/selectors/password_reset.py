@@ -69,6 +69,23 @@ def find_valid_password_reset_token(
         .first()
     )
 
+def get_valid_password_reset_token(
+    *,
+    token_hash: str,
+) -> PasswordResetToken:
+    """
+    Return a valid password reset token.
+
+    Raises:
+        PasswordResetToken.DoesNotExist
+    """
+    return (
+        PasswordResetToken.objects
+        .with_user()
+        .valid()
+        .get(token_hash=token_hash)
+    )
+
 
 # =============================================================================
 # User
