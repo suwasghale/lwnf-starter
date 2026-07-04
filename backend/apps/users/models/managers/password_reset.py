@@ -5,6 +5,7 @@ Custom manager for PasswordResetToken.
 from __future__ import annotations
 
 from datetime import datetime
+from django.utils import timezone
 from typing import TYPE_CHECKING
 
 from django.db import models
@@ -49,4 +50,20 @@ class PasswordResetTokenManager(
             expires_at=expires_at,
             created_ip=created_ip,
             user_agent=user_agent,
+        )
+        
+    def invalidate_user_tokens(
+        self,
+        *,
+        user: User,
+    ) -> int:
+        """
+        Consume every unused password reset token belonging to a user.
+        """
+        return (
+            self.unused()
+            .for_user(user)
+            .update(
+                used_at=timezone.now(),
+            )
         )
