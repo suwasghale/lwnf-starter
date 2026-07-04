@@ -1,0 +1,89 @@
+{% extends "emails/base.html" %}
+
+{% block title %}
+Confirmation de votre demande de parrainage
+{% endblock %}
+
+{% block content %}
+
+<p>Bonjour {{ user.first_name|default:user.email }},</p>
+
+<p>
+Nous vous remercions chaleureusement pour votre engagement envers <strong>L.W.N.F</strong>.
+</p>
+
+<p>
+Nous avons bien reçu votre demande de parrainage. Toute notre équipe vous remercie de la confiance que vous accordez à notre association et à nos actions au Népal.
+</p>
+
+<p>
+Votre demande est actuellement en cours de traitement. Après vérification, notre équipe prendra contact avec vous afin de finaliser les prochaines étapes du parrainage.
+</p>
+
+<table
+style="
+width:100%;
+margin:30px 0;
+border-collapse:collapse;
+font-size:15px;
+">
+
+<tr>
+<td style="padding:10px 0;"><strong>Référence</strong></td>
+<td style="padding:10px 0;">{{ sponsorship.reference }}</td>
+</tr>
+
+<tr>
+<td style="padding:10px 0;"><strong>Date de la demande</strong></td>
+<td style="padding:10px 0;">{{ sponsorship.created_at }}</td>
+</tr>
+
+<tr>
+<td style="padding:10px 0;"><strong>Statut</strong></td>
+<td style="padding:10px 0;">{{ sponsorship.status }}</td>
+</tr>
+
+{% if sponsorship.child_name %}
+<tr>
+<td style="padding:10px 0;"><strong>Enfant concerné</strong></td>
+<td style="padding:10px 0;">{{ sponsorship.child_name }}</td>
+</tr>
+{% endif %}
+
+</table>
+
+<p>
+Le parrainage permet d'accompagner durablement un enfant dans son parcours scolaire et son développement personnel grâce au soutien régulier de nos parrains et marraines.
+</p>
+
+<p style="margin:40px 0;text-align:center;">
+
+<a href="{{ sponsorship_url }}"
+style="
+display:inline-block;
+padding:14px 32px;
+background:#0f172a;
+color:#ffffff;
+text-decoration:none;
+border-radius:8px;
+font-weight:600;
+font-size:16px;
+">
+
+Consulter ma demande
+
+</a>
+
+</p>
+
+<p>
+Nous vous remercions encore pour votre générosité et votre confiance.
+Votre engagement contribue directement à améliorer la vie des enfants que nous accompagnons.
+</p>
+
+<p>
+Bien cordialement,<br>
+L'équipe L.W.N.F
+</p>
+
+{% endblock %}

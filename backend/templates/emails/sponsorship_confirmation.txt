@@ -1,0 +1,39 @@
+{% extends "emails/base.txt" %}
+
+{% block title %}
+Confirmation de votre demande de parrainage
+{% endblock %}
+
+{% block content %}
+
+Bonjour {{ user.first_name|default:user.email }},
+
+Nous avons bien reçu votre demande de parrainage.
+
+Référence :
+{{ sponsorship.reference }}
+
+Date :
+{{ sponsorship.created_at }}
+
+Statut :
+{{ sponsorship.status }}
+
+{% if sponsorship.child_name %}
+Enfant concerné :
+{{ sponsorship.child_name }}
+{% endif %}
+
+Vous pouvez consulter votre demande ici :
+
+{{ sponsorship_url }}
+
+Notre équipe examinera votre dossier et vous contactera prochainement afin de finaliser les prochaines étapes.
+
+Nous vous remercions sincèrement pour votre engagement auprès de L.W.N.F.
+
+Bien cordialement,
+
+L'équipe L.W.N.F
+
+{% endblock %}
