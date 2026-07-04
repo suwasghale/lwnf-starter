@@ -104,10 +104,12 @@ def request_password_reset(
         token=raw_token,
     )
 
-    send_password_reset_email.delay(
-        recipient=user.email,
-        full_name=user.full_name,
-        reset_url=reset_url,
+    send_password_reset_email.apply_async(
+        kwargs={
+            "recipient": user.email,
+            "full_name": user.full_name,
+            "reset_url": reset_url,
+        },
     )
 
 
@@ -175,3 +177,71 @@ def _get_valid_token(
         )
 
     return token
+
+
+# =============================================================================
+# Verification
+# =============================================================================
+
+
+def verify_password_reset_token(
+    *,
+    raw_token: str,
+) -> PasswordResetToken:
+    """
+    Verify that a password reset token is valid.
+
+    This does not mutate the database.
+
+    Raises:
+        InvalidToken
+    """
+
+    return _get_valid_token(
+        raw_token=raw_token,
+    )
+
+
+# =============================================================================
+# Password Reset
+# =============================================================================
+
+
+@transaction.atomic
+def reset_password(
+    *,
+    raw_token: str,
+    new_password: str,
+) -> User:
+    """
+    Reset a user's password.
+
+    Workflow:
+
+        - Verify token.
+        - Change password.
+        - Consume current token.
+        - Invalidate remaining tokens.
+
+    Raises:
+        InvalidToken
+    """
+
+    token = _get_valid_token(
+        raw_token=raw_token,
+    )
+
+    user = token.user
+
+    change_password(
+        user=user,
+        password=new_password,
+    )
+
+    token.consume()
+
+    PasswordResetToken.objects.invalidate_user_tokens(
+        user=user,
+    )
+
+    return user
