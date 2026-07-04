@@ -9,6 +9,7 @@ from __future__ import annotations
 import hashlib
 import secrets
 
+from urllib.parse import urlencode
 
 DEFAULT_TOKEN_BYTES = 32
 
@@ -31,7 +32,7 @@ def generate_secure_token(
 
 
 def hash_token(
-    token: str,
+    raw_token: str,
 ) -> str:
     """
     Return the SHA-256 hash of a token.
@@ -47,7 +48,7 @@ def hash_token(
         Hexadecimal SHA-256 digest.
     """
     return hashlib.sha256(
-        token.encode("utf-8")
+        raw_token.encode("utf-8")
     ).hexdigest()
 
 
@@ -98,3 +99,30 @@ def verify_token(
         hash_token(raw_token),
         token_hash
     )
+
+
+def build_frontend_url(
+    *,
+    base_url: str,
+    token: str,
+    **query_params,
+) -> str:
+    """
+    Build a frontend URL containing the raw token.
+
+    Example:
+        build_frontend_url(
+            base_url="https://app.example.com/reset-password",
+            token="abc123",
+            email="user@example.com",
+        )
+
+    Returns:
+        https://app.example.com/reset-password?token=abc123&email=user@example.com
+    """
+    params = {
+        "token": token,
+        **query_params,
+    }
+
+    return f"{base_url}?{urlencode(params)}"
