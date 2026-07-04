@@ -7,7 +7,7 @@ Exceptions related to user accounts.
 ===============================================================================
 """
 
-from common.exceptions import LWNFException
+from core.exceptions import LWNFException
 
 
 class UserException(LWNFException):

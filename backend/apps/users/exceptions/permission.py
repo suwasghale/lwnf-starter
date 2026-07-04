@@ -7,7 +7,7 @@ Exceptions related to authorization.
 ===============================================================================
 """
 
-from common.exceptions import LWNFException
+from core.exceptions import LWNFException
 
 
 class PermissionException(LWNFException):

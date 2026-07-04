@@ -7,7 +7,7 @@ Exceptions related to user registration.
 ===============================================================================
 """
 
-from common.exceptions import LWNFException
+from core.exceptions import LWNFException
 
 
 class RegistrationException(LWNFException):

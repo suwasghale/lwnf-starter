@@ -7,7 +7,7 @@ Exceptions related to authentication and security.
 ===============================================================================
 """
 
-from common.exceptions import LWNFException
+from core.exceptions import LWNFException
 
 
 class AuthenticationException(LWNFException):
