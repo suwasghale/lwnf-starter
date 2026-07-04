@@ -20,3 +20,11 @@ FRONTEND_URL = env(
     "FRONTEND_URL",
     default="http://localhost:3000",
 )
+
+FRONTEND_VERIFY_EMAIL_URL = (
+    f"{FRONTEND_URL}/verify-email"
+)
+
+FRONTEND_PASSWORD_RESET_URL = (
+    f"{FRONTEND_URL}/reset-password"
+)
