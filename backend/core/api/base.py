@@ -18,6 +18,8 @@ from __future__ import annotations
 from rest_framework import permissions
 from rest_framework.request import Request
 from rest_framework.views import APIView
+from rest_framework.generics import GenericAPIView
+from rest_framework.permissions import IsAuthenticated
 
 
 class BaseAPIView(APIView):
@@ -96,3 +98,59 @@ class BaseAPIView(APIView):
             self.request.user
             and self.request.user.is_authenticated
         )
+        
+
+"""
+Reusable base API views.
+
+These classes provide shared behavior for every API endpoint.
+
+Business logic should never live here.
+"""
+
+
+class BaseAPIView(GenericAPIView):
+    """
+    Base API view for the project.
+
+    Features:
+
+    - serializer support
+    - queryset support
+    - DRF GenericAPIView utilities
+    """
+
+    authentication_classes = ()
+
+    permission_classes = ()
+
+    throttle_classes = ()
+
+    serializer_class = None
+
+    queryset = None
+
+    def get_serializer_context(self) -> dict:
+        """
+        Extend serializer context.
+        """
+
+        context = super().get_serializer_context()
+
+        context.update(
+            {
+                "request": self.request,
+            }
+        )
+
+        return context
+
+
+class AuthenticatedAPIView(BaseAPIView):
+    """
+    Base class for authenticated endpoints.
+    """
+
+    permission_classes = (
+        IsAuthenticated,
+    )
