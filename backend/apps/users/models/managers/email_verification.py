@@ -6,6 +6,8 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 from datetime import datetime
+from django.utils import timezone
+
 from django.db import models
 
 from ..querysets import EmailVerificationTokenQuerySet
@@ -48,4 +50,22 @@ class EmailVerificationTokenManager(
             expires_at=expires_at,
             created_ip=created_ip,
             user_agent=user_agent,
+        )
+        
+
+    def invalidate_user_tokens(
+        self,
+        *,
+        user: User,
+    ) -> int:
+        """
+        Consume every unused verification token belonging
+        to the given user.
+        """
+        return (
+            self.unused()
+            .for_user(user)
+            .update(
+                used_at=timezone.now(),
+            )
         )

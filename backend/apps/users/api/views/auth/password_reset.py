@@ -33,7 +33,7 @@ from apps.users.api.serializers.auth.password_reset import (
     PasswordResetVerifySerializer,
 )
 
-from apps.users.services.password_reset import (
+from apps.users.services.auth.password_reset import (
     request_password_reset,
     reset_password,
     verify_password_reset_token,
