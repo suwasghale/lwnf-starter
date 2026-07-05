@@ -12,8 +12,11 @@ They NEVER contain business logic.
 
 from __future__ import annotations
 
-from django.contrib.auth.password_validation import validate_password
-from rest_framework import serializers
+from apps.users.api.serializers.base import (
+    EmailSerializer,
+    TokenPasswordSerializer,
+    TokenSerializer,
+)
 
 
 # =============================================================================
@@ -22,28 +25,14 @@ from rest_framework import serializers
 
 
 class PasswordResetRequestSerializer(
-    serializers.Serializer,
+    EmailSerializer,
 ):
     """
     Serializer used to request a password reset email.
     """
 
-    email = serializers.EmailField(
-        required=True,
-        max_length=254,
-    )
+    pass
 
-    def validate_email(
-        self,
-        value: str,
-    ) -> str:
-        """
-        Normalize email.
-
-        User existence is intentionally NOT checked here.
-        That belongs to the service layer to avoid user enumeration.
-        """
-        return value.strip().lower()
 
 
 # =============================================================================
@@ -52,33 +41,13 @@ class PasswordResetRequestSerializer(
 
 
 class PasswordResetVerifySerializer(
-    serializers.Serializer,
+    TokenSerializer,
 ):
     """
     Serializer used to verify a password reset token.
     """
 
-    token = serializers.CharField(
-        required=True,
-        trim_whitespace=True,
-        max_length=512,
-    )
-
-    def validate_token(
-        self,
-        value: str,
-    ) -> str:
-        """
-        Normalize token.
-        """
-        value = value.strip()
-
-        if not value:
-            raise serializers.ValidationError(
-                "Token is required."
-            )
-
-        return value
+    pass
 
 
 # =============================================================================
@@ -87,72 +56,10 @@ class PasswordResetVerifySerializer(
 
 
 class PasswordResetConfirmSerializer(
-    serializers.Serializer,
+    TokenPasswordSerializer,
 ):
     """
     Serializer used to reset a password.
     """
 
-    token = serializers.CharField(
-        required=True,
-        trim_whitespace=True,
-        max_length=512,
-    )
-
-    password = serializers.CharField(
-        required=True,
-        write_only=True,
-        trim_whitespace=False,
-        style={
-            "input_type": "password",
-        },
-    )
-
-    password_confirm = serializers.CharField(
-        required=True,
-        write_only=True,
-        trim_whitespace=False,
-        style={
-            "input_type": "password",
-        },
-    )
-
-    def validate_token(
-        self,
-        value: str,
-    ) -> str:
-        """
-        Normalize token.
-        """
-        value = value.strip()
-
-        if not value:
-            raise serializers.ValidationError(
-                "Token is required."
-            )
-
-        return value
-
-    def validate(
-        self,
-        attrs: dict,
-    ) -> dict:
-        """
-        Validate password confirmation.
-        """
-
-        password = attrs["password"]
-        password_confirm = attrs["password_confirm"]
-
-        if password != password_confirm:
-            raise serializers.ValidationError(
-                {
-                    "password_confirm": (
-                        "Passwords do not match."
-                    )
-                }
-            )
-
-        validate_password(password)
-
-        return attrs
+    pass

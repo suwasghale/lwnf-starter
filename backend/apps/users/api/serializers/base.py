@@ -23,15 +23,14 @@ class BaseSerializer(serializers.Serializer):
     """
 
     @staticmethod
-    def normalize_email(
-        email: str,
-    ) -> str:
-        """
-        Normalize an email address.
-        """
+    def normalize_email(email: str) -> str:
         return email.strip().lower()
-
-
+    
+    @staticmethod
+    def normalize_string(value: str) -> str:
+        return value.strip()
+    
+    
 # =============================================================================
 # Email Serializer
 # =============================================================================
@@ -74,7 +73,7 @@ class TokenSerializer(BaseSerializer):
         self,
         value: str,
     ) -> str:
-        value = value.strip()
+        value = self.normalize_string(value)
 
         if not value:
             raise serializers.ValidationError(
@@ -89,18 +88,20 @@ class TokenSerializer(BaseSerializer):
 # =============================================================================
 
 
-class PasswordConfirmationSerializer(TokenSerializer):
+class TokenPasswordSerializer(TokenSerializer):
     """
-    Reusable serializer containing:
+    Reusable serializer for endpoints requiring:
 
     - token
     - password
     - password confirmation
     """
 
+
     password = serializers.CharField(
         write_only=True,
         trim_whitespace=False,
+        required=True,
         style={
             "input_type": "password",
         },
@@ -109,6 +110,7 @@ class PasswordConfirmationSerializer(TokenSerializer):
     password_confirm = serializers.CharField(
         write_only=True,
         trim_whitespace=False,
+        required=True,
         style={
             "input_type": "password",
         },
@@ -116,10 +118,10 @@ class PasswordConfirmationSerializer(TokenSerializer):
 
     def validate(
         self,
-        attrs: dict,
-    ) -> dict:
-        password = attrs["password"]
-        password_confirm = attrs["password_confirm"]
+        attrs: dict[str, str],
+    ) -> dict[str, object]:
+        password = str(attrs["password"])
+        password_confirm = str(attrs["password_confirm"])
 
         if password != password_confirm:
             raise serializers.ValidationError(
@@ -132,4 +134,4 @@ class PasswordConfirmationSerializer(TokenSerializer):
 
         validate_password(password)
 
-        return attrs
+        return super().validate(attrs)
