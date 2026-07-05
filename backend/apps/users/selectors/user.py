@@ -1,8 +1,9 @@
 """
 Selectors related to the User model.
-NOTE: Selectors are NOT services. They should not contain business logic only even not crud operations. They are responsible for reading data and returning it in a format that is useful for the caller.
+
 Selectors are responsible ONLY for reading data.
-They must never create, update or delete records.
+
+They never create, update or delete records.
 """
 
 from __future__ import annotations
@@ -14,11 +15,15 @@ from django.db.models import QuerySet
 from apps.users.models import User
 
 
-# ---------------------------------------------------------------------
+# =============================================================================
 # Single Objects
-# ---------------------------------------------------------------------
+# =============================================================================
 
-def get_user_by_id(user_id: UUID) -> User:
+
+def get_user_by_id(
+    *,
+    user_id: UUID,
+) -> User:
     """
     Return a user by UUID.
 
@@ -32,9 +37,15 @@ def get_user_by_id(user_id: UUID) -> User:
     )
 
 
-def find_user_by_email(email: str) -> User | None:
+def find_user_by_email(
+    *,
+    email: str,
+) -> User | None:
     """
-    Return a user by email or None.
+    Return a user by email.
+
+    Returns:
+        User | None
     """
     return (
         User.objects
@@ -44,13 +55,14 @@ def find_user_by_email(email: str) -> User | None:
     )
 
 
-# ---------------------------------------------------------------------
+# =============================================================================
 # Lists
-# ---------------------------------------------------------------------
+# =============================================================================
+
 
 def list_users() -> QuerySet[User]:
     """
-    Return all users.
+    Return every user.
     """
     return (
         User.objects
@@ -98,12 +110,20 @@ def list_staff_users() -> QuerySet[User]:
     )
 
 
-# ---------------------------------------------------------------------
+# =============================================================================
 # Boolean
-# ---------------------------------------------------------------------
+# =============================================================================
 
-def exists_user_by_email(email: str) -> bool:
+
+def exists_user_by_email(
+    *,
+    email: str,
+) -> bool:
     """
-    Check whether a user exists.
+    Return whether a user exists with the given email.
     """
-    return User.objects.filter(email__iexact=email).exists()
+    return (
+        User.objects
+        .filter(email__iexact=email)
+        .exists()
+    )
