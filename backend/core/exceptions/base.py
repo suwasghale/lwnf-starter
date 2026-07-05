@@ -11,7 +11,8 @@ class LWNFException(Exception):
     """
 
     default_message = "An unexpected application error occurred."
-
+    status_code = 400
+    
     def __init__(
         self,
         message: str | None = None,
