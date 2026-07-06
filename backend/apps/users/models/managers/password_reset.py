@@ -12,10 +12,8 @@ from django.db import models
 
 from ..querysets import PasswordResetTokenQuerySet
 
-from apps.users.typing import (
-    User,
-    PasswordResetToken,
-)
+if TYPE_CHECKING:   
+    from apps.users.models import PasswordResetToken, User
 
 
 class PasswordResetTokenManager(

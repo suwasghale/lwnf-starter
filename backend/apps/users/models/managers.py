@@ -18,13 +18,15 @@ the services layer—not here.
 
 from __future__ import annotations
 
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from django.contrib.auth.base_user import BaseUserManager
 from django.utils import timezone
 
+if TYPE_CHECKING:
+    from apps.users.models import User
 
-class UserManager(BaseUserManager):
+class UserManager(BaseUserManager["User"]):
     """
     Custom manager for the User model.
 

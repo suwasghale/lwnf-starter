@@ -20,8 +20,10 @@ from typing import Any
 
 from django.contrib.auth.base_user import BaseUserManager
 
-from apps.users.typing import User
+from typing import TYPE_CHECKING
 
+if TYPE_CHECKING:
+    from apps.users.models import User
 
 class UserManager(BaseUserManager["User"]):
     """

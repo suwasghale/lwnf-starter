@@ -9,10 +9,8 @@ from typing import TYPE_CHECKING
 from django.db import models
 from django.utils import timezone
 
-from apps.users.typing import (
-    User,
-    PasswordResetToken,
-)
+if TYPE_CHECKING:
+    from apps.users.models import PasswordResetToken, User
 
 
 class PasswordResetTokenQuerySet(

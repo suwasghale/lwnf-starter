@@ -1,6 +1,6 @@
-from .address import Address
+from .user import User  
 from .profile import Profile
-from .user import User
+from .address import Address
 
 __all__ = [
     "Address",

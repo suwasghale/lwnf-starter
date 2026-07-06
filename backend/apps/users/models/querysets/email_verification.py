@@ -7,10 +7,10 @@ from __future__ import annotations
 from django.db import models
 from django.utils import timezone
 
-from apps.users.typing import (
-    User,
-    EmailVerificationToken,
-)
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from apps.users.models import EmailVerificationToken, User
 
 
 class EmailVerificationTokenQuerySet(

@@ -18,11 +18,9 @@ from apps.users.services.auth.registration import (
 )
 
 from core.api.base import BaseAPIView
-from core.api.responses import SuccessResponse
-from core.api.schemas import (
-    bad_request_schema,
-    created_schema,
-)
+
+from core.api.responses import created_response
+
 from core.api.throttles import RegistrationThrottle
 
 
@@ -34,11 +32,10 @@ from core.api.throttles import RegistrationThrottle
     ),
     request=RegistrationSerializer,
     responses={
-        201: created_schema(
-            "Registration successful. "
-            "Please verify your email address."
+        201: created_response(
+            message = ("Registration successful. "
+            "Please verify your email address.")
         ),
-        400: bad_request_schema(),
     },
 )
 class RegistrationAPIView(BaseAPIView):
@@ -80,7 +77,7 @@ class RegistrationAPIView(BaseAPIView):
             user_agent=self.get_user_agent(),
         )
 
-        return SuccessResponse.created(
+        return created_response(
             message=(
                 "Registration successful. "
                 "Please verify your email address."
