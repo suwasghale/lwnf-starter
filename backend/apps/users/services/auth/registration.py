@@ -9,6 +9,8 @@ from urllib.parse import urlencode
 from django.db import transaction
 from django.utils import timezone
 
+from typing import Any
+
 from apps.users.exceptions.registration import (
     EmailAlreadyRegistered,
 )
@@ -44,10 +46,7 @@ from config.settings.components.auth import (
 @transaction.atomic
 def register_user(
     *,
-    email: str,
-    password: str,
-    first_name: str = "",
-    last_name: str = "",
+    data: dict[str, Any],
     created_ip: str | None = None,
     user_agent: str = "",
 ) -> User:
@@ -69,6 +68,11 @@ def register_user(
     Raises:
         EmailAlreadyRegistered
     """
+    
+    email = str(data["email"])
+    password = str(data["password"])
+    first_name = str(data.get("first_name", ""))
+    last_name = str(data.get("last_name", ""))
 
     if exists_user_by_email(email):
         raise EmailAlreadyRegistered()
@@ -93,9 +97,9 @@ def register_user(
         + EMAIL_VERIFICATION_TOKEN_LIFETIME
     )
 
-    EmailVerificationToken.objects.invalidate_user_tokens(
-        user=user,
-    )
+    # EmailVerificationToken.objects.invalidate_user_tokens(
+    #     user=user,
+    # )
 
     EmailVerificationToken.objects.create_verification_token(
         user=user,

@@ -21,7 +21,7 @@ FRONTEND_URL = env(
     default="http://localhost:3000",
 )
 
-FRONTEND_VERIFY_EMAIL_URL = (
+FRONTEND_EMAIL_VERIFICATION_URL = (
     f"{FRONTEND_URL}/verify-email"
 )
 
