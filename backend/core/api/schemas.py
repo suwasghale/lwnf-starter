@@ -8,35 +8,58 @@ Views should import these helpers instead of
 duplicating OpenApiResponse definitions.
 """
 
-from drf_spectacular.utils import OpenApiResponse
+from rest_framework.serializers import Serializer
+from drf_spectacular.utils import (
+    OpenApiResponse,
+    OpenApiExample,
+)
+
 
 
 def success_schema(
-    description: str = "Request completed successfully.",
+    *,
+    description: str = "Success.",
+    response: type[Serializer] | None = None,
+    examples: list[OpenApiExample] | None = None,
+
 ) -> OpenApiResponse:
+
     return OpenApiResponse(
+        response=response,
         description=description,
+        examples=examples,
     )
 
 
 def created_schema(
+    *,
     description: str = "Resource created successfully.",
+    response: type[Serializer] | None = None,
+    examples: list[OpenApiExample] | None = None,
+
 ) -> OpenApiResponse:
     return OpenApiResponse(
+        response=response,
         description=description,
+        examples=examples,
     )
 
 
 def accepted_schema(
+    *,
     description: str = "Request accepted.",
+    response: type[Serializer] | None = None,
+    examples: list[OpenApiExample] | None = None,
 ) -> OpenApiResponse:
     return OpenApiResponse(
+        response=response,
         description=description,
     )
 
 
 def no_content_schema() -> OpenApiResponse:
     return OpenApiResponse(
+        response=None,
         description="No content.",
     )
 
