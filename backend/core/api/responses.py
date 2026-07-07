@@ -39,7 +39,7 @@ class SuccessResponse:
     Standardized success responses.
     """
 
-    @staticmethod
+    @classmethod
     def _build(
         *,
         message: str,
