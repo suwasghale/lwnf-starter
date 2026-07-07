@@ -34,102 +34,72 @@ from rest_framework import status
 from rest_framework.response import Response
 
 
-# =============================================================================
-# Internal
-# =============================================================================
-
-
-def _response(
-    *,
-    success: bool,
-    message: str,
-    data: Any = None,
-    status_code: int,
-    headers: dict[str, str] | None = None,
-) -> Response:
+class SuccessResponse:
     """
-    Build a standardized API response.
+    Standardized success responses.
     """
 
-    payload = {
-        "success": success,
-        "message": message,
-        "data": data,
-    }
+    @staticmethod
+    def _build(
+        *,
+        message: str,
+        data: Any = None,
+        status_code: int,
+        headers: dict[str, str] | None = None,
+    ) -> Response:
+        return Response(
+            {
+                "success": True,
+                "message": message,
+                "data": data,
+            },
+            status=status_code,
+            headers=headers,
+        )
 
-    return Response(
-        payload,
-        status=status_code,
-        headers=headers,
-    )
+    @classmethod
+    def ok(
+        cls,
+        *,
+        message: str = "Success.",
+        data: Any = None,
+    ) -> Response:
+        return cls._build(
+            message=message,
+            data=data,
+            status_code=status.HTTP_200_OK,
+        )
 
+    @classmethod
+    def created(
+        cls,
+        *,
+        message: str = "Resource created.",
+        data: Any = None,
+        headers: dict[str, str] | None = None,
+    ) -> Response:
+        return cls._build(
+            message=message,
+            data=data,
+            status_code=status.HTTP_201_CREATED,
+            headers=headers,
+        )
 
-# =============================================================================
-# Success Responses
-# =============================================================================
+    @classmethod
+    def accepted(
+        cls,
+        *,
+        message: str = "Request accepted.",
+        data: Any = None,
+    ) -> Response:
+        return cls._build(
+            message=message,
+            data=data,
+            status_code=status.HTTP_202_ACCEPTED,
+        )
 
-
-def success_response(
-    *,
-    message: str = "Success.",
-    data: Any = None,
-) -> Response:
-    """
-    HTTP 200
-    """
-
-    return _response(
-        success=True,
-        message=message,
-        data=data,
-        status_code=status.HTTP_200_OK,
-    )
-
-
-def created_response(
-    *,
-    message: str = "Resource created.",
-    data: Any = None,
-    headers: dict[str, str] | None = None,
-) -> Response:
-    """
-    HTTP 201
-    """
-
-    return _response(
-        success=True,
-        message=message,
-        data=data,
-        status_code=status.HTTP_201_CREATED,
-        headers=headers,
-    )
-
-
-def accepted_response(
-    *,
-    message: str = "Request accepted.",
-    data: Any = None,
-) -> Response:
-    """
-    HTTP 202
-    """
-
-    return _response(
-        success=True,
-        message=message,
-        data=data,
-        status_code=status.HTTP_202_ACCEPTED,
-    )
-
-
-def no_content_response() -> Response:
-    """
-    HTTP 204
-
-    RFC 9110 states that 204 responses MUST NOT
-    contain a response body.
-    """
-
-    return Response(
-        status=status.HTTP_204_NO_CONTENT,
-    )
+    @staticmethod
+    def no_content() -> Response:
+        return Response(
+            status=status.HTTP_204_NO_CONTENT,
+        )
