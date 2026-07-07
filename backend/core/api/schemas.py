@@ -8,120 +8,76 @@ Views should import these helpers instead of
 duplicating OpenApiResponse definitions.
 """
 
-from __future__ import annotations
-
-from drf_spectacular.utils import (
-    OpenApiExample,
-    OpenApiResponse,
-)
+from drf_spectacular.utils import OpenApiResponse
 
 
-# =============================================================================
-# Common Responses
-# =============================================================================
+def success_schema(
+    description: str = "Request completed successfully.",
+) -> OpenApiResponse:
+    return OpenApiResponse(
+        description=description,
+    )
 
 
-SUCCESS_RESPONSE = OpenApiResponse(
-    description="Request completed successfully.",
-)
+def created_schema(
+    description: str = "Resource created successfully.",
+) -> OpenApiResponse:
+    return OpenApiResponse(
+        description=description,
+    )
 
 
-CREATED_RESPONSE = OpenApiResponse(
-    description="Resource created successfully.",
-)
+def accepted_schema(
+    description: str = "Request accepted.",
+) -> OpenApiResponse:
+    return OpenApiResponse(
+        description=description,
+    )
 
 
-ACCEPTED_RESPONSE = OpenApiResponse(
-    description="Request accepted.",
-)
+def no_content_schema() -> OpenApiResponse:
+    return OpenApiResponse(
+        description="No content.",
+    )
 
 
-NO_CONTENT_RESPONSE = OpenApiResponse(
-    description="No content.",
-)
+def bad_request_schema() -> OpenApiResponse:
+    return OpenApiResponse(
+        description="Validation error.",
+    )
 
 
-BAD_REQUEST_RESPONSE = OpenApiResponse(
-    description="Validation error.",
-)
+def unauthorized_schema() -> OpenApiResponse:
+    return OpenApiResponse(
+        description="Authentication required.",
+    )
 
 
-UNAUTHORIZED_RESPONSE = OpenApiResponse(
-    description="Authentication required.",
-)
+def forbidden_schema() -> OpenApiResponse:
+    return OpenApiResponse(
+        description="Permission denied.",
+    )
 
 
-FORBIDDEN_RESPONSE = OpenApiResponse(
-    description="Permission denied.",
-)
+def not_found_schema() -> OpenApiResponse:
+    return OpenApiResponse(
+        description="Requested resource was not found.",
+    )
 
 
-NOT_FOUND_RESPONSE = OpenApiResponse(
-    description="Requested resource was not found.",
-)
+def conflict_schema() -> OpenApiResponse:
+    return OpenApiResponse(
+        description="Conflict.",
+    )
 
 
-CONFLICT_RESPONSE = OpenApiResponse(
-    description="Conflict.",
-)
+def too_many_requests_schema() -> OpenApiResponse:
+    return OpenApiResponse(
+        description="Too many requests.",
+    )
 
 
-TOO_MANY_REQUESTS_RESPONSE = OpenApiResponse(
-    description="Too many requests.",
-)
-
-
-SERVER_ERROR_RESPONSE = OpenApiResponse(
-    description="Internal server error.",
-)
-
-
-# =============================================================================
-# Common Examples
-# =============================================================================
-
-
-SUCCESS_EXAMPLE = OpenApiExample(
-    name="Success",
-    value={
-        "success": True,
-        "message": "Operation completed successfully.",
-        "data": {},
-    },
-    response_only=True,
-)
-
-
-VALIDATION_ERROR_EXAMPLE = OpenApiExample(
-    name="Validation Error",
-    value={
-        "success": False,
-        "message": "Validation failed.",
-        "errors": {
-            "email": [
-                "This field is required."
-            ]
-        },
-    },
-    response_only=True,
-)
-
-
-INVALID_TOKEN_EXAMPLE = OpenApiExample(
-    name="Invalid Token",
-    value={
-        "success": False,
-        "message": "Password reset token is invalid or has expired.",
-    },
-    response_only=True,
-)
-
-
-RATE_LIMIT_EXAMPLE = OpenApiExample(
-    name="Rate Limited",
-    value={
-        "success": False,
-        "message": "Request was throttled.",
-    },
-    response_only=True,
-)
+def server_error_schema() -> OpenApiResponse:
+    return OpenApiResponse(
+        description="Internal server error.",
+    )
