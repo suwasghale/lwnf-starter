@@ -10,6 +10,12 @@ from rest_framework.permissions import AllowAny
 from rest_framework.request import Request
 from rest_framework.response import Response
 
+from core.api.schemas import (
+    created_schema,
+    bad_request_schema,
+    too_many_requests_schema,
+)
+
 from apps.users.api.serializers.auth.registration import (
     RegistrationSerializer,
 )
@@ -19,7 +25,7 @@ from apps.users.services.auth.registration import (
 
 from core.api.base import BaseAPIView
 
-from core.api.responses import created_response
+from core.api.responses import SuccessResponse
 
 from core.api.throttles import RegistrationThrottle
 
@@ -27,15 +33,14 @@ from core.api.throttles import RegistrationThrottle
 @extend_schema(
     tags=["Authentication"],
     summary="Register a new user",
-    description=(
-        "Creates a new account and sends an email verification link."
-    ),
+    description="Create a new user account.",
     request=RegistrationSerializer,
     responses={
-        201: created_response(
-            message = ("Registration successful. "
-            "Please verify your email address.")
+        201: created_schema(
+            description="Registration successful. Verification email sent.",
         ),
+        400: bad_request_schema(),
+        429: too_many_requests_schema(),
     },
 )
 class RegistrationAPIView(BaseAPIView):
@@ -77,7 +82,7 @@ class RegistrationAPIView(BaseAPIView):
             user_agent=self.get_user_agent(),
         )
 
-        return created_response(
+        return SuccessResponse.created(
             message=(
                 "Registration successful. "
                 "Please verify your email address."

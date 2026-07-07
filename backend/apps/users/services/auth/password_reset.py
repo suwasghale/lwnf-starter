@@ -21,10 +21,11 @@ from urllib.parse import urlencode
 from django.db import transaction
 from django.utils import timezone
 
-from apps.users.exceptions import InvalidToken
+from apps.users.exceptions.authentication import (
+    PasswordResetTokenInvalid,)
 from apps.users.models import User
 from apps.users.models.tokens import PasswordResetToken
-from apps.users.selectors.password_reset import (
+from apps.users.selectors.auth.password_reset import (
     get_valid_password_reset_token,
 )
 from apps.users.selectors.user import (
@@ -224,7 +225,7 @@ def _get_valid_token(
     Return a valid password reset token.
 
     Raises:
-        InvalidToken
+        PasswordResetTokenInvalid
     """
 
     token_hash = hash_token(raw_token)
@@ -235,6 +236,6 @@ def _get_valid_token(
         )
 
     except PasswordResetToken.DoesNotExist as exc:
-        raise InvalidToken(
+        raise PasswordResetTokenInvalid(
             "Password reset token is invalid or has expired."
         ) from exc

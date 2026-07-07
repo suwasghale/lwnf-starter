@@ -18,13 +18,16 @@ from drf_spectacular.utils import extend_schema
 
 from rest_framework.permissions import AllowAny
 
+from ...serializers.auth.registration import RegistrationSerializer
+
 from core.api.base import BaseAPIView
-from core.api.responses import success_response
+
 from core.api.schemas import (
-    BAD_REQUEST_RESPONSE,
-    SUCCESS_RESPONSE,
-    TOO_MANY_REQUESTS_RESPONSE,
+    success_schema,
+    bad_request_schema,
+    too_many_requests_schema,
 )
+
 from core.api.throttles import PasswordResetThrottle
 
 from apps.users.api.serializers.auth.password_reset import (
@@ -44,14 +47,15 @@ from apps.users.services.auth.password_reset import (
 # Request Password Reset
 # =============================================================================
 
-
 @extend_schema(
     tags=["Authentication"],
     request=PasswordResetRequestSerializer,
     responses={
-        200: SUCCESS_RESPONSE,
-        400: BAD_REQUEST_RESPONSE,
-        429: TOO_MANY_REQUESTS_RESPONSE,
+        200: success_schema(
+            description="Password reset email requested.",
+        ),
+        400: bad_request_schema(),
+        429: too_many_requests_schema(),
     },
 )
 class PasswordResetRequestAPIView(BaseAPIView):
@@ -97,12 +101,17 @@ class PasswordResetRequestAPIView(BaseAPIView):
 
 @extend_schema(
     tags=["Authentication"],
-    request=PasswordResetVerifySerializer,
+    request=PasswordResetRequestSerializer,
     responses={
-        200: SUCCESS_RESPONSE,
-        400: BAD_REQUEST_RESPONSE,
+        200: success_schema(
+            description="Password reset token is valid.",
+        ),
+        400: bad_request_schema(),
+        429: too_many_requests_schema(),
     },
 )
+
+
 class PasswordResetVerifyAPIView(BaseAPIView):
     """
     Verify a password reset token.
@@ -138,12 +147,17 @@ class PasswordResetVerifyAPIView(BaseAPIView):
 
 @extend_schema(
     tags=["Authentication"],
-    request=PasswordResetConfirmSerializer,
+    request=PasswordResetRequestSerializer,
     responses={
-        200: SUCCESS_RESPONSE,
-        400: BAD_REQUEST_RESPONSE,
+        200: success_schema(
+            description="Password reset successfully.",
+        ),
+        400: bad_request_schema(),
+        429: too_many_requests_schema(),
     },
 )
+
+
 class PasswordResetConfirmAPIView(BaseAPIView):
     """
     Reset a user's password.

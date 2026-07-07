@@ -10,8 +10,8 @@ from __future__ import annotations
 from django.db.models import QuerySet
 
 from apps.users.models.tokens import PasswordResetToken
-from apps.users.typing import User
 
+from apps.users.models.user import User
 
 # =============================================================================
 # Single Object
@@ -94,7 +94,7 @@ def get_valid_password_reset_token(
 
 def list_user_password_reset_tokens(
     *,
-    user: User,
+    user: type[User],
 ) -> QuerySet[PasswordResetToken]:
     """
     Return every password reset token belonging to a user.
