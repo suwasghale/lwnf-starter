@@ -74,7 +74,7 @@ def register_user(
     first_name = str(data.get("first_name", ""))
     last_name = str(data.get("last_name", ""))
 
-    if exists_user_by_email(email):
+    if exists_user_by_email(email=email):
         raise EmailAlreadyRegistered()
 
     user = User.objects.create_user(
