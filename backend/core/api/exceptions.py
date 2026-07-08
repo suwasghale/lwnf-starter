@@ -78,14 +78,18 @@ def custom_exception_handler(exc, context):
     # ============================================================
     # Unexpected Exceptions
     # ============================================================
+    
+    # During development, let Django show the full traceback.
+    raise exc
 
-    return Response(
-        {
-            "success": False,
-            "message": (
-                "An unexpected server error occurred."
-            ),
-            "errors": None,
-        },
-        status=status.HTTP_500_INTERNAL_SERVER_ERROR,
-    )
+    # return Response(
+    #     {
+    #         "success": False,
+    #         "message": (
+    #             "An unexpected server error occurred."
+    #         ),
+    #         "errors": None,
+    #     },
+    #     status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+    # )
+    

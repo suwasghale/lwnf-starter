@@ -6,3 +6,4 @@ urlpatterns = [
         include("apps.users.api.urls.auth"),
     ),
 ]
+
