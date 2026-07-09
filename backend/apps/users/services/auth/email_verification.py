@@ -21,8 +21,9 @@ from django.utils import timezone
 
 from apps.users.models import (
     User,
-    EmailVerificationToken,
 )
+from apps.users.models.tokens.email_verification import (
+    EmailVerificationToken, )
 
 from apps.users.selectors.auth.email_verification import (
     find_verification_token,
@@ -82,12 +83,15 @@ def create_email_verification(
     verification_url = build_email_verification_url(
         token=raw_token,
     )
-
-    send_email_verification_email.delay(
+    print("Creating verification email...")
+    
+    result = send_email_verification_email.delay(
         recipient=user.email,
         full_name=user.full_name,
         verification_url=verification_url,
     )
+
+    print(result.id)
 
 
 @transaction.atomic

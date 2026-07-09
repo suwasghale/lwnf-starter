@@ -66,9 +66,15 @@ CELERY_REDIS_URL = build_redis_url(
 # Broker
 # =============================================================================
 
-CELERY_BROKER_URL = CELERY_REDIS_URL
+CELERY_BROKER_URL = env(
+    "CELERY_BROKER_URL",
+    default=CELERY_REDIS_URL,
+)
 
-CELERY_RESULT_BACKEND = CELERY_REDIS_URL
+CELERY_RESULT_BACKEND = env(
+    "CELERY_RESULT_BACKEND",
+    default=CELERY_REDIS_URL,
+)
 
 # =============================================================================
 # Serialization
