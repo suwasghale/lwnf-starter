@@ -25,7 +25,12 @@ from apps.users.models import (
 )
 
 from apps.users.selectors.auth.email_verification import (
-    find_valid_verification_token,
+    find_verification_token,
+)
+from apps.users.exceptions.authentication import (
+    EmailAlreadyVerified,
+    EmailVerificationTokenExpired,
+    EmailVerificationTokenInvalid,
 )
 
 from core.security.tokens import (
@@ -93,16 +98,24 @@ def verify_email(
 
     token_hash = hash_token(raw_token)
 
-    token = find_valid_verification_token(
+    token = find_verification_token(
         token_hash=token_hash,
     )
 
     if token is None:
-        raise ValueError(
-            "Invalid or expired verification token."
-        )
+        raise EmailVerificationTokenInvalid()
+
+    if token.used_at is not None:
+        raise EmailVerificationTokenInvalid()
+
+    if token.expires_at <= timezone.now():
+        raise EmailVerificationTokenExpired()
+
+    if token.user.is_verified:
+        raise EmailAlreadyVerified()
 
     token.user.is_verified = True
+
     token.user.save(
         update_fields=[
             "is_verified",
