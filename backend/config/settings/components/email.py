@@ -145,3 +145,6 @@ EMAIL_RETRY_DELAY = env.int(
     default=60,
 )
 
+EMAIL_VERIFICATION_TOKEN_LIFETIME_HOURS = 24
+
+FRONTEND_URL = "http://localhost:3000"

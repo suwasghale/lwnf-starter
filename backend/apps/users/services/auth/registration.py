@@ -24,6 +24,7 @@ from apps.users.models.tokens import (
 from apps.users.selectors.user import (
     exists_user_by_email,
 )
+from apps.users.services.auth.email_verification import create_email_verification
 from apps.users.tasks.email import (
     send_email_verification_email,
 )
@@ -101,10 +102,8 @@ def register_user(
     #     user=user,
     # )
 
-    EmailVerificationToken.objects.create_verification_token(
+    create_email_verification(
         user=user,
-        token_hash=token_hash,
-        expires_at=expires_at,
         created_ip=created_ip,
         user_agent=user_agent,
     )

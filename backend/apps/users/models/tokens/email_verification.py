@@ -15,10 +15,8 @@ and validation belongs in the service layer.
 
 from __future__ import annotations
 
-import uuid
 
 from django.db import models
-from django.utils import timezone
 
 from apps.users.models import User
 from apps.users.models.base.abstract_token import AbstractToken
