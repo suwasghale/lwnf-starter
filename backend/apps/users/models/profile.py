@@ -74,7 +74,11 @@ class Profile(models.Model):
         verbose_name="Date of birth",
     )
     
-    nationality = CountryField(...)
+    nationality = CountryField(
+            blank=True,
+            null=True,
+            verbose_name="Nationality",
+    )
 
     # ------------------------------------------------------------------
     # Contact Information
