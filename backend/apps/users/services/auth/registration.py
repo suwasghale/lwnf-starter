@@ -86,9 +86,9 @@ def register_user(
         is_verified=False,
     )
 
-    Profile.objects.create(
-        user=user,
-    )
+    # Profile.objects.create(
+    #     user=user,
+    # )
 
     raw_token, token_hash = generate_hashed_token()
 

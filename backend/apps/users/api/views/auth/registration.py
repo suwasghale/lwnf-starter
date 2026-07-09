@@ -29,6 +29,10 @@ from core.api.responses import SuccessResponse
 
 from core.api.throttles import RegistrationThrottle
 
+from apps.users.api.serializers.auth.registration_response import (
+    RegistrationResponseSerializer,
+)
+
 
 @extend_schema(
     tags=["Authentication"],
@@ -37,7 +41,8 @@ from core.api.throttles import RegistrationThrottle
     request=RegistrationSerializer,
     responses={
         201: created_schema(
-            description="Registration successful. Verification email sent.",
+            description="Registration successful.",
+            response=RegistrationResponseSerializer,
         ),
         400: bad_request_schema(),
         429: too_many_requests_schema(),
@@ -76,15 +81,20 @@ class RegistrationAPIView(BaseAPIView):
 
         data = serializer.validated_data
 
-        register_user(
+        user = register_user(
             data=data,
             created_ip=self.get_client_ip(),
             user_agent=self.get_user_agent(),
         )
+
+        response_data = RegistrationResponseSerializer(
+            user,
+        ).data
 
         return SuccessResponse.created(
             message=(
                 "Registration successful. "
                 "Please verify your email address."
             ),
+            data=response_data,
         )

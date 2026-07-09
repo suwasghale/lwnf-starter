@@ -35,11 +35,8 @@ from rest_framework.response import Response
 
 
 class SuccessResponse:
-    """
-    Standardized success responses.
-    """
 
-    @classmethod
+    @staticmethod
     def _build(
         *,
         message: str,
@@ -58,12 +55,7 @@ class SuccessResponse:
         )
 
     @classmethod
-    def ok(
-        cls,
-        *,
-        message: str = "Success.",
-        data: Any = None,
-    ) -> Response:
+    def ok(cls, *, message="Success.", data=None):
         return cls._build(
             message=message,
             data=data,
@@ -71,13 +63,7 @@ class SuccessResponse:
         )
 
     @classmethod
-    def created(
-        cls,
-        *,
-        message: str = "Resource created.",
-        data: Any = None,
-        headers: dict[str, str] | None = None,
-    ) -> Response:
+    def created(cls, *, message="Resource created.", data=None, headers=None):
         return cls._build(
             message=message,
             data=data,
@@ -86,12 +72,7 @@ class SuccessResponse:
         )
 
     @classmethod
-    def accepted(
-        cls,
-        *,
-        message: str = "Request accepted.",
-        data: Any = None,
-    ) -> Response:
+    def accepted(cls, *, message="Request accepted.", data=None):
         return cls._build(
             message=message,
             data=data,
@@ -99,7 +80,5 @@ class SuccessResponse:
         )
 
     @staticmethod
-    def no_content() -> Response:
-        return Response(
-            status=status.HTTP_204_NO_CONTENT,
-        )
+    def no_content():
+        return Response(status=status.HTTP_204_NO_CONTENT)
