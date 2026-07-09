@@ -6,7 +6,7 @@ Vérification de votre adresse e-mail
 
 {% block content %}
 
-Bonjour {{ user.first_name|default:user.email }},
+Bonjour {{ full_name }},
 
 Merci d'avoir créé un compte sur L.W.N.F.
 
@@ -14,7 +14,7 @@ Veuillez confirmer votre adresse e-mail en utilisant le lien suivant :
 
 {{ verification_url }}
 
-Ce lien expirera dans {{ expiration_hours }} heures.
+Ce lien expirera dans 24 heures.
 
 Si vous n'êtes pas à l'origine de cette demande, ignorez simplement cet e-mail.
 

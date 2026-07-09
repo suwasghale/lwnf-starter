@@ -6,7 +6,7 @@ Vérification de votre adresse e-mail
 
 {% block content %}
 
-<p>Bonjour {{ user.first_name|default:user.email }},</p>
+<p>Bonjour {{ full_name }},</p>
 
 <p>
 Merci d'avoir créé un compte sur <strong>L.W.N.F</strong>.
@@ -46,7 +46,7 @@ Si le bouton ne fonctionne pas, copiez et collez le lien suivant dans votre navi
 
 <p>
 Pour votre sécurité, ce lien expirera dans
-<strong>{{ expiration_hours }} heures</strong>.
+<strong>24 heures</strong>.
 </p>
 
 <p>
