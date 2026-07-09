@@ -42,6 +42,10 @@ from apps.users.tasks.email import (
     send_email_verification_email,
 )
 
+from apps.users.utils.urls import (
+    build_email_verification_url,
+)
+
 
 @transaction.atomic
 def create_email_verification(
@@ -75,9 +79,8 @@ def create_email_verification(
         user_agent=user_agent,
     )
 
-    verification_url = (
-        f"{settings.FRONTEND_URL}"
-        f"/verify-email?token={raw_token}"
+    verification_url = build_email_verification_url(
+        token=raw_token,
     )
 
     send_email_verification_email.delay(
