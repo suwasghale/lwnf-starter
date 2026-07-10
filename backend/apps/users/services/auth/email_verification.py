@@ -84,14 +84,25 @@ def create_email_verification(
         token=raw_token,
     )
     print("Creating verification email...")
-    
-    result = send_email_verification_email.delay(
-        recipient=user.email,
-        full_name=user.full_name,
-        verification_url=verification_url,
-    )
+    print("USING DELAY")
 
-    print(result.id)
+    try:
+        result = send_email_verification_email.delay(
+            recipient=user.email,
+            full_name=user.full_name,
+            verification_url=verification_url,
+        )
+
+        print("TASK ID:", result.id)
+
+    except Exception as e:
+        import traceback
+
+        print("=" * 80)
+        traceback.print_exc()
+        print("=" * 80)
+
+        raise
 
 
 @transaction.atomic
