@@ -26,7 +26,7 @@ dependencies = [
     "pillow>=12.3.0",
     "psycopg[binary]>=3.3.4",
     "python-dotenv>=1.2.2",
-    "redis>=8.0.1",
+    "redis>=7.4,<8",
     "requests>=2.34.2",
     "whitenoise>=6.12.0",
 ]
