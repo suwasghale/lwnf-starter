@@ -17,6 +17,44 @@ from django.template.loader import render_to_string
 # =============================================================================
 
 
+# def _send_email(
+#     *,
+#     subject: str,
+#     recipient: str,
+#     html_template: str,
+#     text_template: str,
+#     context: dict,
+# ) -> None:
+#     """
+#     Render and send an email.
+#     """
+
+#     text_body = render_to_string(
+#         text_template,
+#         context,
+#     )
+
+#     html_body = render_to_string(
+#         html_template,
+#         context,
+#     )
+
+#     email = EmailMultiAlternatives(
+#         subject=subject,
+#         body=text_body,
+#         from_email=settings.DEFAULT_FROM_EMAIL,
+#         to=[recipient],
+#     )
+
+#     email.attach_alternative(
+#         html_body,
+#         "text/html",
+#     )
+
+#     email.send(
+#         fail_silently=False,
+#     )
+
 def _send_email(
     *,
     subject: str,
@@ -25,10 +63,6 @@ def _send_email(
     text_template: str,
     context: dict,
 ) -> None:
-    """
-    Render and send an email.
-    """
-
     text_body = render_to_string(
         text_template,
         context,
@@ -51,9 +85,26 @@ def _send_email(
         "text/html",
     )
 
-    email.send(
+    # ---------------- DEBUG ----------------
+
+    print("=" * 60)
+    print("ABOUT TO SEND EMAIL")
+    print("Recipient:", recipient)
+    print("Subject:", subject)
+
+    count = email.send(
         fail_silently=False,
     )
+
+    print("EMAIL.SEND() RETURNED:", count)
+    print("=" * 60)
+
+    with open("email-debug.txt", "a", encoding="utf-8") as f:
+        f.write(
+            f"recipient={recipient}, subject={subject}, sent={count}\n"
+        )
+
+    # ---------------------------------------
 
 
 # =============================================================================
@@ -117,6 +168,7 @@ def send_email_verification_email(
             "full_name": full_name,
             "verification_url": verification_url,
         },
+        
     )
     
     
