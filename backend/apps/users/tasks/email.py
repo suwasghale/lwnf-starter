@@ -4,6 +4,8 @@ Celery tasks for user-related emails.
 
 from __future__ import annotations
 
+import os
+
 from celery import shared_task
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
@@ -94,26 +96,20 @@ def send_password_reset_email(
 # =============================================================================
 
 
-@shared_task(
-    autoretry_for=(Exception,),
-    retry_backoff=True,
-    retry_jitter=True,
-    retry_kwargs={
-        "max_retries": settings.EMAIL_MAX_RETRIES,
-    },
-)
+@shared_task
 def send_email_verification_email(
     *,
     recipient: str,
     full_name: str,
     verification_url: str,
-) -> None:
-    """
-    Send an email verification email.
-    """
+):
+    with open("celery-test.txt", "a", encoding="utf-8") as f:
+        f.write(
+            f"PID={os.getpid()} recipient={recipient}\n"
+        )
 
     _send_email(
-        subject="Vérifiez votre adresse e-mail",
+        subject="Test",
         recipient=recipient,
         html_template="emails/verification.html",
         text_template="emails/verification.txt",
@@ -122,8 +118,8 @@ def send_email_verification_email(
             "verification_url": verification_url,
         },
     )
-
-
+    
+    
 # =============================================================================
 # Welcome
 # =============================================================================
