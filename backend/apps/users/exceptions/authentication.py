@@ -20,6 +20,10 @@ class AuthenticationException(LWNFException):
 
 class InvalidCredentials(AuthenticationException):
     default_message = "Invalid email or password."
+    
+
+class InactiveAccount(AuthenticationException):
+    default_message = "This account has been disabled."
 
 
 class EmailNotVerified(AuthenticationException):
@@ -76,3 +80,6 @@ class AuthenticationTokenInvalid(AuthenticationException):
 
 class AuthenticationTokenExpired(AuthenticationException):
     default_message = "Authentication token has expired."
+    
+    
+
