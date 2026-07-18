@@ -22,6 +22,10 @@ from apps.users.api.views.auth.token_refresh import (
     TokenRefreshAPIView,   
 )
 
+from apps.users.api.views.auth.logout import (
+    LogoutAPIView,
+)
+
 app_name = "auth"
 
 urlpatterns = [
@@ -44,5 +48,10 @@ urlpatterns = [
         "refresh/",
         TokenRefreshAPIView.as_view(),
         name="token-refresh",
+    ),
+    path(
+        "logout/",
+        LogoutAPIView.as_view(),
+        name="logout",
     ),
 ]
