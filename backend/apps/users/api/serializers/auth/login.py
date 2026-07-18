@@ -24,3 +24,4 @@ class LoginSerializer(serializers.Serializer):
             "input_type": "password",
         },
     )
+    
