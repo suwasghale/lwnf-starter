@@ -29,6 +29,7 @@ THIRD_PARTY_APPS = [
     "drf_spectacular",
     "django_filters",
     "corsheaders",
+    "rest_framework_simplejwt.token_blacklist",
 ]
 
 # ------------------------------------------------------------------------------
