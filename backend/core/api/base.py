@@ -10,9 +10,9 @@ class BaseAPIView(GenericAPIView):
     Base API view for the entire project.
     """
 
-    authentication_classes = ()
-    permission_classes = ()
-    throttle_classes = ()
+    # authentication_classes = ()
+    # permission_classes = ()
+    # throttle_classes = ()
 
     serializer_class = None
     queryset = None

@@ -1,3 +1,4 @@
+
 from drf_spectacular.utils import extend_schema
 
 from rest_framework.permissions import IsAuthenticated
@@ -14,6 +15,8 @@ from apps.users.services.auth.logout import (
     logout,
 )
 
+from rest_framework.request import Request
+from rest_framework.response import Response
 
 @extend_schema(
     tags=["Authentication"],
@@ -21,22 +24,31 @@ from apps.users.services.auth.logout import (
     request=LogoutSerializer,
 )
 class LogoutAPIView(BaseAPIView):
-
+    
     permission_classes = (
         IsAuthenticated,
     )
 
     serializer_class = LogoutSerializer
 
-    def post(self, request) -> Response:
+    def post(
+        self,
+        request: Request,
+        *args,
+        **kwargs,
+    ) -> Response:
+
+        # print("=" * 60)
+        # print("USER:", request.user)
+        # print("AUTH:", request.auth)
+        # print("IS AUTHENTICATED:", request.user.is_authenticated)
+        # print("=" * 60)
 
         serializer = self.get_serializer(
             data=request.data,
         )
 
-        serializer.is_valid(
-            raise_exception=True,
-        )
+        serializer.is_valid(raise_exception=True)
 
         logout(
             refresh=serializer.validated_data["refresh"],
