@@ -18,6 +18,9 @@ from apps.users.api.views.auth.login import (
     LoginAPIView,
 )
 
+from apps.users.api.views.auth.token_refresh import (
+    TokenRefreshAPIView,   
+)
 
 app_name = "auth"
 
@@ -36,5 +39,10 @@ urlpatterns = [
         "login/",
         LoginAPIView.as_view(),
         name="login",
+    ),
+    path(
+        "refresh/",
+        TokenRefreshAPIView.as_view(),
+        name="token-refresh",
     ),
 ]
