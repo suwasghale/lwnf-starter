@@ -30,6 +30,10 @@ from apps.users.api.views.auth.logout_all import (
     LogoutAllAPIView,
 )
 
+from apps.users.api.views.auth.me import (
+    CurrentUserAPIView,
+)
+
 app_name = "auth"
 
 urlpatterns = [
@@ -62,5 +66,10 @@ urlpatterns = [
         "logout-all/",
         LogoutAllAPIView.as_view(),
         name="logout-all",
+    ),
+    path(
+        "me/",
+        CurrentUserAPIView.as_view(),
+        name="me",
     ),
 ]
