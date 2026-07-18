@@ -14,6 +14,10 @@ from apps.users.api.views.auth.email_verification import (
     EmailVerificationAPIView,
 )
 
+from apps.users.api.views.auth.login import (
+    LoginAPIView,
+)
+
 
 app_name = "auth"
 
@@ -27,5 +31,10 @@ urlpatterns = [
         "verify-email/",
         EmailVerificationAPIView.as_view(),
         name="verify-email",
+    ),
+    path(
+        "login/",
+        LoginAPIView.as_view(),
+        name="login",
     ),
 ]
