@@ -23,6 +23,8 @@ class LoginUserSerializer(serializers.ModelSerializer):
             "first_name",
             "last_name",
             "is_verified",
+            "is_staff",
+            "is_active",
         )
 
         read_only_fields = fields
