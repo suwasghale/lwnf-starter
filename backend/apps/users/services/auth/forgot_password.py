@@ -1,0 +1,113 @@
+"""
+Business logic for requesting a password reset.
+"""
+
+from __future__ import annotations
+
+from django.db import transaction
+
+from config.settings.env import env
+
+from apps.users.models import (
+    PasswordResetToken,
+)
+
+from apps.users.selectors.user import (
+    find_user_by_email,
+)
+
+from apps.users.services.tokens.password_reset import (
+    create_password_reset_token,
+)
+
+from apps.users.tasks.emails import (
+    send_password_reset_email,
+)
+
+from core.security.tokens import (
+    build_frontend_url,
+)
+
+
+# =============================================================================
+# Settings
+# =============================================================================
+
+FRONTEND_PASSWORD_RESET_URL = env(
+    "FRONTEND_PASSWORD_RESET_URL",
+)
+
+
+# =============================================================================
+# Public API
+# =============================================================================
+
+
+@transaction.atomic
+def forgot_password(
+    *,
+    email: str,
+    created_ip: str | None = None,
+    user_agent: str = "",
+) -> None:
+    """
+    Request a password reset.
+
+    Security:
+    - Never reveal whether an account exists.
+    - Ignore inactive accounts.
+    - Invalidate previous unused tokens.
+    - Send a new password reset email.
+    """
+
+    user = find_user_by_email(
+        email=email,
+    )
+
+    # -------------------------------------------------------------------------
+    # Prevent email enumeration.
+    # -------------------------------------------------------------------------
+
+    if user is None:
+        return
+
+    if not user.is_active:
+        return
+
+    # -------------------------------------------------------------------------
+    # Remove every unused token.
+    # -------------------------------------------------------------------------
+
+    PasswordResetToken.objects.filter(
+        user=user,
+        used_at__isnull=True,
+    ).delete()
+
+    # -------------------------------------------------------------------------
+    # Create a fresh token.
+    # -------------------------------------------------------------------------
+
+    result = create_password_reset_token(
+        user=user,
+        created_ip=created_ip,
+        user_agent=user_agent,
+    )
+
+    # -------------------------------------------------------------------------
+    # Build frontend URL.
+    # -------------------------------------------------------------------------
+
+    reset_url = build_frontend_url(
+        base_url=FRONTEND_PASSWORD_RESET_URL,
+        token=result.raw_token,
+    )
+
+    # -------------------------------------------------------------------------
+    # Queue email.
+    # -------------------------------------------------------------------------
+
+    send_password_reset_email.delay(
+        recipient=user.email,
+        full_name=user.full_name,
+        reset_url=reset_url,
+    )
