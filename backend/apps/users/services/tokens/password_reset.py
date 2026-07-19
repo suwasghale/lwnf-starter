@@ -100,7 +100,7 @@ def create_password_reset_token(
         minutes=PASSWORD_RESET_TOKEN_EXPIRY_MINUTES,
     )
 
-    token = PasswordResetToken.objects.create(
+    token = PasswordResetToken.objects.create_password_reset_token(
         user=user,
         token_hash=token_hash,
         expires_at=expires_at,
@@ -112,3 +112,20 @@ def create_password_reset_token(
         token=token,
         raw_token=raw_token,
     )
+    
+@transaction.atomic
+def invalidate_password_reset_tokens(
+        *,
+        user: User,
+    ) -> int:
+        """
+        Invalidate every unused password reset token
+        belonging to a user.
+
+        Returns:
+            Number of invalidated tokens.
+        """
+
+        return PasswordResetToken.objects.invalidate_unused_tokens(
+            user=user,
+        )

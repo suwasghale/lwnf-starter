@@ -8,16 +8,13 @@ from django.db import transaction
 
 from config.settings.env import env
 
-from apps.users.models import (
-    PasswordResetToken,
-)
-
 from apps.users.selectors.user import (
     find_user_by_email,
 )
 
 from apps.users.services.tokens.password_reset import (
     create_password_reset_token,
+    invalidate_password_reset_tokens,
 )
 
 from apps.users.tasks.emails import (
@@ -54,10 +51,11 @@ def forgot_password(
     Request a password reset.
 
     Security:
-    - Never reveal whether an account exists.
-    - Ignore inactive accounts.
-    - Invalidate previous unused tokens.
-    - Send a new password reset email.
+        - Never reveal whether an account exists.
+        - Ignore inactive accounts.
+        - Invalidate previous unused tokens.
+        - Issue a new password reset token.
+        - Queue a password reset email.
     """
 
     user = find_user_by_email(
@@ -68,23 +66,19 @@ def forgot_password(
     # Prevent email enumeration.
     # -------------------------------------------------------------------------
 
-    if user is None:
-        return
-
-    if not user.is_active:
+    if user is None or not user.is_active:
         return
 
     # -------------------------------------------------------------------------
-    # Remove every unused token.
+    # Invalidate previous password reset tokens.
     # -------------------------------------------------------------------------
 
-    PasswordResetToken.objects.filter(
+    invalidate_password_reset_tokens(
         user=user,
-        used_at__isnull=True,
-    ).delete()
+    )
 
     # -------------------------------------------------------------------------
-    # Create a fresh token.
+    # Create a fresh password reset token.
     # -------------------------------------------------------------------------
 
     result = create_password_reset_token(
@@ -94,7 +88,7 @@ def forgot_password(
     )
 
     # -------------------------------------------------------------------------
-    # Build frontend URL.
+    # Build frontend reset URL.
     # -------------------------------------------------------------------------
 
     reset_url = build_frontend_url(
@@ -103,7 +97,7 @@ def forgot_password(
     )
 
     # -------------------------------------------------------------------------
-    # Queue email.
+    # Queue password reset email.
     # -------------------------------------------------------------------------
 
     send_password_reset_email.delay(

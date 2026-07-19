@@ -50,14 +50,18 @@ class PasswordResetTokenManager(
             user_agent=user_agent,
         )
         
-    def invalidate_user_tokens(
+    def invalidate_unused_tokens(
         self,
         *,
         user: User,
     ) -> int:
         """
-        Consume every unused password reset token belonging to a user.
+        Mark every unused password reset token for a user as used.
+
+        Returns:
+            Number of invalidated tokens.
         """
+
         return (
             self.unused()
             .for_user(user)
