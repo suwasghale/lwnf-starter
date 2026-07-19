@@ -34,6 +34,10 @@ from apps.users.api.views.auth.me import (
     CurrentUserAPIView,
 )
 
+from apps.users.api.views.auth.change_password import (
+    ChangePasswordAPIView,
+)
+
 app_name = "auth"
 
 urlpatterns = [
@@ -71,5 +75,10 @@ urlpatterns = [
         "me/",
         CurrentUserAPIView.as_view(),
         name="me",
+    ),
+    path(
+        "change-password/",
+        ChangePasswordAPIView.as_view(),
+        name="change-password",
     ),
 ]
