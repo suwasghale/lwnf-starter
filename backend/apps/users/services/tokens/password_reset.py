@@ -30,12 +30,8 @@ from apps.users.models import (
     User,
 )
 
-from apps.users.models.tokens.password_reset import (
+from apps.users.models.tokens import (
     PasswordResetToken,     
-)
-
-from core.security.tokens import (
-    generate_hashed_token,
 )
 
 
@@ -60,7 +56,7 @@ PASSWORD_RESET_TOKEN_EXPIRY_MINUTES = env.int(
 
 
 @dataclass(slots=True)
-class PasswordResetTokenResult:
+class CreatedPasswordResetToken:
     """
     Newly created password reset token.
 
@@ -83,7 +79,7 @@ def create_password_reset_token(
     user: User,
     created_ip: str | None = None,
     user_agent: str = "",
-) -> PasswordResetTokenResult:
+) -> CreatedPasswordResetToken:
     """
     Create a new password reset token.
 
@@ -102,7 +98,7 @@ def create_password_reset_token(
             Browser/device information.
 
     Returns:
-        PasswordResetTokenResult
+        CreatedPasswordResetToken
     """
 
     raw_token, token_hash = generate_hashed_token(
@@ -121,7 +117,7 @@ def create_password_reset_token(
         user_agent=user_agent,
     )
 
-    return PasswordResetTokenResult(
+    return CreatedPasswordResetToken(
         token=token,
         raw_token=raw_token,
     )
@@ -169,17 +165,17 @@ def verify_password_reset_token(
     
 @transaction.atomic
 def consume_password_reset_tokens(
-        *,
-        user: User,
-    ) -> int:
-        """
-        Invalidate every unused password reset token
-        belonging to a user.
+    *,
+    user: User,
+) -> int:
+    """
+    Consume every unused password reset token
+    belonging to a user.
 
-        Returns:
-            Number of invalidated tokens.
-        """
+    Returns:
+        Number of consumed tokens.
+    """
 
-        return PasswordResetToken.objects.consume_unused_tokens(
-            user=user,
-        )
+    return PasswordResetToken.objects.consume_unused_tokens(
+        user=user,
+    )

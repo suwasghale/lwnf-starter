@@ -16,9 +16,9 @@ from __future__ import annotations
 from django.db import transaction
 
 from apps.users.models import User
-from apps.users.models.tokens import PasswordResetToken
 
 from apps.users.services.tokens.password_reset import (
+    consume_password_reset_tokens,
     verify_password_reset_token,
 )
 
@@ -37,6 +37,7 @@ def reset_password(
     Reset a user's password.
 
     Workflow:
+
         1. Verify the reset token.
         2. Update the user's password.
         3. Consume every remaining password reset token.
@@ -57,7 +58,7 @@ def reset_password(
         password=new_password,
     )
 
-    PasswordResetToken.objects.consume_unused_tokens(
+    consume_password_reset_tokens(
         user=user,
     )
 
