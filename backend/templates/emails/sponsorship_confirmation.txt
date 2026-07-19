@@ -6,7 +6,7 @@ Confirmation de votre demande de parrainage
 
 {% block content %}
 
-Bonjour {{ user.first_name|default:user.email }},
+Bonjour {{ full_name }},
 
 Nous avons bien reçu votre demande de parrainage.
 

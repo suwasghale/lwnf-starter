@@ -63,6 +63,9 @@ def _send_email(
     text_template: str,
     context: dict,
 ) -> None:
+    print("TEXT TEMPLATE:", text_template)
+    print("HTML TEMPLATE:", html_template)
+
     text_body = render_to_string(
         text_template,
         context,
@@ -120,6 +123,7 @@ def _send_email(
         "max_retries": settings.EMAIL_MAX_RETRIES,
     },
 )
+
 def send_password_reset_email(
     *,
     recipient: str,
@@ -129,7 +133,6 @@ def send_password_reset_email(
     """
     Send a password reset email.
     """
-
     _send_email(
         subject="Réinitialisation de votre mot de passe",
         recipient=recipient,

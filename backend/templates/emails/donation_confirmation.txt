@@ -6,7 +6,7 @@ Confirmation de votre don
 
 {% block content %}
 
-Bonjour {{ user.first_name|default:user.email }},
+Bonjour {{ full_name }},
 
 Nous vous remercions pour votre soutien envers L.W.N.F.
 

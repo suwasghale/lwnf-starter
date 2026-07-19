@@ -77,12 +77,16 @@ class ForgotPasswordAPIView(BaseAPIView):
         serializer.is_valid(
             raise_exception=True,
         )
+        
+        print("CALLING forgot_password() in views")
 
         forgot_password(
             email=serializer.validated_data["email"],
             created_ip=self.get_client_ip(),
             user_agent=self.get_user_agent(),
         )
+        
+        print("forgot_password() in views FINISHED")
 
         return SuccessResponse.ok(
             message=(

@@ -44,7 +44,7 @@ DEFAULT_THROTTLE_RATES = {
     ),
     "password_reset": env(
         "DRF_THROTTLE_PASSWORD_RESET",
-        default="3/hour",
+        default="60/hour",
     ),
     "email_verification": env(
         "DRF_THROTTLE_EMAIL_VERIFICATION",

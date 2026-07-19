@@ -57,6 +57,8 @@ def forgot_password(
         - Issue a new password reset token.
         - Queue a password reset email.
     """
+    
+    print("INSIDE FORGOT PASSWORD SERVICE")
 
     user = find_user_by_email(
         email=email,
@@ -100,8 +102,19 @@ def forgot_password(
     # Queue password reset email.
     # -------------------------------------------------------------------------
 
-    send_password_reset_email.delay(
+    # send_password_reset_email.delay(
+    #     recipient=user.email,
+    #     full_name=user.full_name,
+    #     reset_url=reset_url,
+    # )
+    
+    print("========== BEFORE DELAY ==========")
+
+    result = send_password_reset_email.delay(
         recipient=user.email,
         full_name=user.full_name,
         reset_url=reset_url,
     )
+
+    print("TASK ID:", result.id)
+    print("========== AFTER DELAY ==========")
