@@ -83,3 +83,13 @@ class AuthenticationTokenExpired(AuthenticationException):
     
     
 
+class CurrentPasswordInvalid(AuthenticationException):
+    default_message = "Current password is incorrect."
+
+
+class PasswordMismatch(AuthenticationException):
+    default_message = "Passwords do not match."
+
+
+class PasswordReuseNotAllowed(AuthenticationException):
+    default_message = "The new password must be different from the current password."
