@@ -38,6 +38,10 @@ from apps.users.api.views.auth.change_password import (
     ChangePasswordAPIView,
 )
 
+from apps.users.api.views.auth.forgot_password import (
+    ForgotPasswordAPIView,
+)
+
 app_name = "auth"
 
 urlpatterns = [
@@ -80,5 +84,10 @@ urlpatterns = [
         "change-password/",
         ChangePasswordAPIView.as_view(),
         name="change-password",
+    ),
+    path(
+        "forgot-password/",
+        ForgotPasswordAPIView.as_view(),
+        name="forgot-password",
     ),
 ]
