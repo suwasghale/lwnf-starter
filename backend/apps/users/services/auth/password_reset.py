@@ -34,7 +34,7 @@ from apps.users.selectors.user import (
 from apps.users.services.user import (
     change_password,
 )
-from apps.users.tasks.email import (
+from apps.users.tasks.emails import (
     send_password_reset_email,
 )
 

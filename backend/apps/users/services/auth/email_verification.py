@@ -39,7 +39,7 @@ from core.security.tokens import (
     hash_token,
 )
 
-from apps.users.tasks.email import (
+from apps.users.tasks.emails import (
     send_email_verification_email,
 )
 
