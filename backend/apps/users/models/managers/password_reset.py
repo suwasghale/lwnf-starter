@@ -50,7 +50,7 @@ class PasswordResetTokenManager(
             user_agent=user_agent,
         )
         
-    def invalidate_unused_tokens(
+    def consume_unused_tokens(
         self,
         *,
         user: User,
@@ -59,7 +59,7 @@ class PasswordResetTokenManager(
         Mark every unused password reset token for a user as used.
 
         Returns:
-            Number of invalidated tokens.
+            Number of consumed tokens.
         """
 
         return (

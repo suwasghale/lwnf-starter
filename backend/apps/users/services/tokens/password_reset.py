@@ -13,6 +13,19 @@ from django.db import transaction
 
 from config.settings.env import env
 
+from apps.users.exceptions.authentication import (
+    PasswordResetTokenInvalid,
+)
+
+from apps.users.selectors.auth.password_reset import (
+    get_valid_password_reset_token,
+)
+
+from core.security.tokens import (
+    generate_hashed_token,
+    hash_token,
+)
+
 from apps.users.models import (
     User,
 )
@@ -113,8 +126,49 @@ def create_password_reset_token(
         raw_token=raw_token,
     )
     
+
+def verify_password_reset_token(
+    *,
+    raw_token: str,
+) -> PasswordResetToken:
+    """
+    Verify a password reset token.
+
+    Validation:
+        - token exists
+        - token is unused
+        - token has not expired
+        - user is still active
+
+    Returns:
+        PasswordResetToken
+
+    Raises:
+        PasswordResetTokenInvalid
+    """
+
+    token_hash = hash_token(raw_token)
+
+    try:
+        token = get_valid_password_reset_token(
+            token_hash=token_hash,
+        )
+
+    except PasswordResetToken.DoesNotExist as exc:
+        raise PasswordResetTokenInvalid(
+            "Password reset token is invalid or has expired."
+        ) from exc
+
+    if not token.user.is_active:
+        raise PasswordResetTokenInvalid(
+            "User account is inactive."
+        )
+
+    return token
+
+    
 @transaction.atomic
-def invalidate_password_reset_tokens(
+def consume_password_reset_tokens(
         *,
         user: User,
     ) -> int:
@@ -126,6 +180,6 @@ def invalidate_password_reset_tokens(
             Number of invalidated tokens.
         """
 
-        return PasswordResetToken.objects.invalidate_unused_tokens(
+        return PasswordResetToken.objects.consume_unused_tokens(
             user=user,
         )
