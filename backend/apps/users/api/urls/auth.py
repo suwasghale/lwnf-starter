@@ -42,6 +42,10 @@ from apps.users.api.views.auth.forgot_password import (
     ForgotPasswordAPIView,
 )
 
+from apps.users.api.views.auth.reset_password import (
+    ResetPasswordAPIView,
+)
+
 app_name = "auth"
 
 urlpatterns = [
@@ -89,5 +93,10 @@ urlpatterns = [
         "forgot-password/",
         ForgotPasswordAPIView.as_view(),
         name="forgot-password",
+    ),
+    path(
+        "reset-password/",
+        ResetPasswordAPIView.as_view(),
+        name="password-reset",
     ),
 ]

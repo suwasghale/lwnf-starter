@@ -14,7 +14,7 @@ from apps.users.selectors.user import (
 
 from apps.users.services.tokens.password_reset import (
     create_password_reset_token,
-    invalidate_password_reset_tokens,
+    consume_password_reset_tokens,
 )
 
 from apps.users.tasks.emails import (
@@ -75,7 +75,7 @@ def forgot_password(
     # Invalidate previous password reset tokens.
     # -------------------------------------------------------------------------
 
-    invalidate_password_reset_tokens(
+    consume_password_reset_tokens(
         user=user,
     )
 
