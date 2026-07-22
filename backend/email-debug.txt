@@ -1,3 +1,13 @@
 recipient=user10@lwnf.com, subject=Réinitialisation de votre mot de passe, sent=1
 recipient=user8@lwnf.com, subject=Réinitialisation de votre mot de passe, sent=1
 recipient=user6@lwnf.com, subject=Réinitialisation de votre mot de passe, sent=1
+recipient=admin@lwnf.com, subject=Réinitialisation de votre mot de passe, sent=1
+recipient=user6@lwnf.com, subject=Réinitialisation de votre mot de passe, sent=1
+recipient=user6@lwnf.com, subject=Réinitialisation de votre mot de passe, sent=1
+recipient=user6@lwnf.com, subject=Réinitialisation de votre mot de passe, sent=1
+recipient=user6@lwnf.com, subject=Réinitialisation de votre mot de passe, sent=1
+recipient=user6@lwnf.com, subject=Réinitialisation de votre mot de passe, sent=1
+recipient=user6@lwnf.com, subject=Réinitialisation de votre mot de passe, sent=1
+recipient=user3@lwnf.com, subject=Réinitialisation de votre mot de passe, sent=1
+recipient=user4@lwnf.com, subject=Réinitialisation de votre mot de passe, sent=1
+recipient=user3@lwnf.com, subject=Réinitialisation de votre mot de passe, sent=1

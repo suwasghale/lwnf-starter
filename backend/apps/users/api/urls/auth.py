@@ -97,6 +97,6 @@ urlpatterns = [
     path(
         "reset-password/",
         ResetPasswordAPIView.as_view(),
-        name="password-reset",
+        name="reset-reset",
     ),
 ]
