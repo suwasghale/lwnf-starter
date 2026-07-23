@@ -9,94 +9,126 @@ from django.urls import path
 from apps.users.api.views.auth.registration import (
     RegistrationAPIView,
 )
-
 from apps.users.api.views.auth.email_verification import (
     EmailVerificationAPIView,
 )
-
 from apps.users.api.views.auth.login import (
     LoginAPIView,
 )
-
 from apps.users.api.views.auth.token_refresh import (
-    TokenRefreshAPIView,   
+    TokenRefreshAPIView,
 )
-
 from apps.users.api.views.auth.logout import (
     LogoutAPIView,
 )
-
 from apps.users.api.views.auth.logout_all import (
     LogoutAllAPIView,
 )
-
 from apps.users.api.views.auth.me import (
     CurrentUserAPIView,
 )
-
 from apps.users.api.views.auth.change_password import (
     ChangePasswordAPIView,
 )
-
 from apps.users.api.views.auth.forgot_password import (
     ForgotPasswordAPIView,
 )
-
 from apps.users.api.views.auth.reset_password import (
     ResetPasswordAPIView,
+)
+from apps.users.api.views.auth.change_email import (
+    RequestEmailChangeAPIView,
+    ConfirmEmailChangeAPIView,
 )
 
 app_name = "auth"
 
 urlpatterns = [
+    # -------------------------------------------------------------------------
+    # Registration
+    # -------------------------------------------------------------------------
+
     path(
         "register/",
         RegistrationAPIView.as_view(),
         name="register",
     ),
+
     path(
-        "verify-email/",
+        "email/verify/",
         EmailVerificationAPIView.as_view(),
-        name="verify-email",
+        name="email-verify",
     ),
+
+    # -------------------------------------------------------------------------
+    # Authentication
+    # -------------------------------------------------------------------------
+
     path(
         "login/",
         LoginAPIView.as_view(),
         name="login",
     ),
+
     path(
         "refresh/",
         TokenRefreshAPIView.as_view(),
         name="token-refresh",
     ),
+
     path(
         "logout/",
         LogoutAPIView.as_view(),
         name="logout",
     ),
+
     path(
-        "logout-all/",
+        "logout/all/",
         LogoutAllAPIView.as_view(),
         name="logout-all",
     ),
+
     path(
         "me/",
         CurrentUserAPIView.as_view(),
         name="me",
     ),
+
+    # -------------------------------------------------------------------------
+    # Password
+    # -------------------------------------------------------------------------
+
     path(
-        "change-password/",
+        "password/change/",
         ChangePasswordAPIView.as_view(),
-        name="change-password",
+        name="password-change",
     ),
+
     path(
-        "forgot-password/",
+        "password/forgot/",
         ForgotPasswordAPIView.as_view(),
-        name="forgot-password",
+        name="password-forgot",
     ),
+
     path(
-        "reset-password/",
+        "password/reset/",
         ResetPasswordAPIView.as_view(),
-        name="reset-reset",
+        name="password-reset",
+    ),
+
+    # -------------------------------------------------------------------------
+    # Email
+    # -------------------------------------------------------------------------
+
+    path(
+        "email/change/request/",
+        RequestEmailChangeAPIView.as_view(),
+        name="email-change-request",
+    ),
+
+    path(
+        "email/change/confirm/",
+        ConfirmEmailChangeAPIView.as_view(),
+        name="email-change-confirm",
     ),
 ]
