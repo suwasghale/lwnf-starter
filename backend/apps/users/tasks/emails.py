@@ -206,3 +206,34 @@ def send_welcome_email(
             "full_name": full_name,
         },
     )
+    
+
+# =============================================================================
+# Change Email
+# =============================================================================
+
+@shared_task(
+    autoretry_for=(Exception,),
+    retry_backoff=True,
+    retry_kwargs={"max_retries": 3},
+)
+def send_email_change_verification_email(
+    *,
+    recipient: str,
+    full_name: str,
+    verification_url: str,
+) -> None:
+    """
+    Send email change verification email.
+    """
+
+    _send_email(
+        subject="Confirmation de votre nouvelle adresse e-mail",
+        recipient=recipient,
+        html_template="emails/email_change.html",
+        text_template="emails/email_change.txt",
+        context={
+            "full_name": full_name,
+            "verification_url": verification_url,
+        },
+    )
