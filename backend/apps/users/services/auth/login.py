@@ -21,6 +21,8 @@ from apps.users.exceptions.account import (
     AccountDisabled,
 )
 
+from core.exceptions import LWNFException
+
 from apps.users.exceptions.authentication import (
     EmailNotVerified,
 )
@@ -86,7 +88,15 @@ def login(
         raise InvalidCredentials()
     
     if user.deleted_at is not None:
-        raise AccountDeleted()
+        print("ACCOUNT DELETED BRANCH")
+
+        try:
+            raise AccountDeleted()
+        except Exception as e:
+            print(type(e))
+            print(isinstance(e, LWNFException))
+            print(isinstance(e, Exception))
+            raise
 
     if not user.is_active:
         raise AccountDisabled()

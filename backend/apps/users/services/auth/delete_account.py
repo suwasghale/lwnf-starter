@@ -81,13 +81,14 @@ def delete_account(
 
     user.is_active = False
 
-    # Uncomment when your User model has this field.
-    #
-    # user.deleted_at = timezone.now()
+    user.deleted_at = timezone.now()
+    
+    user.set_unusable_password()
 
     user.save(
         update_fields=[
+            "password",
             "is_active",
-            # "deleted_at",
+            "deleted_at",
         ],
     )
