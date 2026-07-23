@@ -4,10 +4,10 @@ Account-related exceptions.
 
 from __future__ import annotations
 
-from core.exceptions.base import BusinessLogicException
+from core.exceptions.base import LWNFException
 
 
-class InvalidPassword(BusinessLogicException):
+class InvalidPassword(LWNFException):
     """
     Raised when the supplied password is incorrect.
     """
