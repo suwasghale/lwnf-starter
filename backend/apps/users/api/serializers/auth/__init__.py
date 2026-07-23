@@ -8,6 +8,9 @@ from .request_email_change import RequestEmailChangeSerializer
 from .confirm_email_change import ConfirmEmailChangeSerializer
 
 from .resend_verification import ResendVerificationSerializer
+
+from .delete_account import DeleteAccountSerializer
+
 __all__ = [
     "PasswordResetRequestSerializer",
     "PasswordResetVerifySerializer",
@@ -15,5 +18,8 @@ __all__ = [
     
     "RequestEmailChangeSerializer",
     "ConfirmEmailChangeSerializer",
-    "ResendVerificationSerializer"
+    "ResendVerificationSerializer",
+    
+    "DeleteAccountSerializer",
+    
 ]

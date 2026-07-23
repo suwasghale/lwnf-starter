@@ -121,6 +121,12 @@ class User(AbstractBaseUser, PermissionsMixin):
         verbose_name=_("Updated at"),
     )
     
+    deleted_at = models.DateTimeField(
+    null=True,
+    blank=True,
+    verbose_name=_("Deleted At")
+    )
+    
     # -------------------------------------------------------------------------
     # Authentication Configuration
     # -------------------------------------------------------------------------
