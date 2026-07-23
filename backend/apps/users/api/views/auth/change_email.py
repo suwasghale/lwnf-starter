@@ -10,21 +10,26 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from apps.users.api.serializers.auth import (
-    RequestEmailChangeSerializer,
     ConfirmEmailChangeSerializer,
+    RequestEmailChangeSerializer,
 )
 
 from apps.users.services.auth.change_email import (
-    request_email_change,
     confirm_email_change,
+    request_email_change,
 )
 
 
-class RequestEmailChangeView(APIView):
+class RequestEmailChangeAPIView(APIView):
     """
     Request an email address change.
 
-    Requires authentication.
+    Requires an authenticated user.
+
+    Workflow:
+        - Validate the requested email address.
+        - Create an email change request.
+        - Send a verification email to the new address.
     """
 
     permission_classes = [
@@ -53,22 +58,25 @@ class RequestEmailChangeView(APIView):
         return Response(
             {
                 "detail": (
-                    "A verification email has been sent "
-                    "to your new email address."
+                    "A verification email has been sent to your "
+                    "new email address."
                 )
             },
             status=status.HTTP_200_OK,
         )
 
 
-class ConfirmEmailChangeView(APIView):
+class ConfirmEmailChangeAPIView(APIView):
     """
     Confirm an email address change.
+
+    This endpoint is accessed through the verification
+    link sent to the user's new email address.
     """
 
-    permission_classes = []
-
     authentication_classes = []
+
+    permission_classes = []
 
     def post(
         self,

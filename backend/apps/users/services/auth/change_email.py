@@ -66,20 +66,46 @@ def request_email_change(
         - Create a new email change token.
         - Queue verification email.
     """
-
+    print("A")
     new_email = new_email.lower().strip()
 
     if user.email.lower() == new_email:
         return
 
-    if find_user_by_email(new_email):
+    if find_user_by_email(email=new_email):
         raise EmailAlreadyInUse(
             "An account with this email already exists."
         )
+    
+    print("B")
 
-    consume_email_change_tokens(
-        user=user,
-    )
+    # consume_email_change_tokens(
+    #     user=user,
+    # )
+
+    # result = create_email_change_token(
+    #     user=user,
+    #     new_email=new_email,
+    #     created_ip=created_ip,
+    #     user_agent=user_agent,
+    # )
+
+    # verification_url = _build_email_change_url(
+    #     token=result.raw_token,
+    # )
+
+    # transaction.on_commit(
+    #     lambda: send_email_change_verification_email.delay(
+    #         recipient=new_email,
+    #         full_name=user.full_name,
+    #         verification_url=verification_url,
+    #     )
+    # )
+    # print("1. Email uniqueness check passed")
+
+    consume_email_change_tokens(user=user)
+    # print("2. Tokens consumed")
+    print("C")
 
     result = create_email_change_token(
         user=user,
@@ -87,10 +113,14 @@ def request_email_change(
         created_ip=created_ip,
         user_agent=user_agent,
     )
+    # print("3. Token created")
+    print("D")
 
     verification_url = _build_email_change_url(
         token=result.raw_token,
     )
+    # print("4. URL built:", verification_url)
+    print("E")
 
     transaction.on_commit(
         lambda: send_email_change_verification_email.delay(
@@ -99,6 +129,9 @@ def request_email_change(
             verification_url=verification_url,
         )
     )
+
+    # print("5. Task registered")
+    print("F")
 
 
 @transaction.atomic
@@ -124,12 +157,12 @@ def confirm_email_change(
     user = token.user
 
     user.email = token.new_email
-    user.email_verified = True
+    user.is_verified = True
 
     user.save(
         update_fields=[
             "email",
-            "email_verified",
+            "is_verified",
         ]
     )
 

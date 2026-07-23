@@ -93,3 +93,19 @@ class PasswordMismatch(AuthenticationException):
 
 class PasswordReuseNotAllowed(AuthenticationException):
     default_message = "The new password must be different from the current password."
+    
+
+class EmailChangeTokenInvalid(AuthenticationException):
+    """
+    Raised when an email change token is invalid,
+    expired, or already consumed.
+    """
+
+    default_message = (
+        "Email change token is invalid or has expired."
+    )
+    
+class EmailAlreadyInUse(AuthenticationException):
+    default_message = (
+        "This email address is already in use."
+    )

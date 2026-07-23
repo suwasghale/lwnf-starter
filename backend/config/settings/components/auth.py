@@ -28,3 +28,8 @@ FRONTEND_EMAIL_VERIFICATION_URL = (
 FRONTEND_PASSWORD_RESET_URL = (
     f"{FRONTEND_URL}/reset-password"
 )
+
+FRONTEND_EMAIL_CHANGE_URL = env(
+    "FRONTEND_EMAIL_CHANGE_URL",
+    default="http://localhost:3000/change-email",
+)
