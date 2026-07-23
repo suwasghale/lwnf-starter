@@ -45,6 +45,10 @@ from apps.users.api.views.auth.resend_verification import (
     ResendVerificationAPIView,
 )
 
+from apps.users.api.views.auth.delete_account import (
+    DeleteAccountAPIView,
+)
+
 app_name = "auth"
 
 urlpatterns = [
@@ -141,4 +145,16 @@ urlpatterns = [
         ResendVerificationAPIView.as_view(),
         name="email-resend",
     ),
+    
+    # -------------------------------------------------------------------------
+    # Account 
+    # -------------------------------------------------------------------------
+    
+    path(
+    "account/delete/",
+    DeleteAccountAPIView.as_view(),
+    name="account-delete",
+    ),
+    
+    
 ]
