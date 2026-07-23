@@ -16,6 +16,15 @@ from apps.users.exceptions.authentication import (
     InvalidCredentials,
 )
 
+from apps.users.exceptions.account import (
+    AccountDeleted,
+    AccountDisabled,
+)
+
+from apps.users.exceptions.authentication import (
+    EmailNotVerified,
+)
+
 from apps.users.services.auth.account_validation import (
     validate_account,
 )
@@ -75,6 +84,15 @@ def login(
 
     if user is None:
         raise InvalidCredentials()
+    
+    if user.deleted_at is not None:
+        raise AccountDeleted()
+
+    if not user.is_active:
+        raise AccountDisabled()
+
+    if not user.is_verified:
+        raise EmailNotVerified()
 
     if not user.check_password(password):
         raise InvalidCredentials()
