@@ -8,10 +8,4 @@ from rest_framework import serializers
 
 
 class ResendVerificationSerializer(serializers.Serializer):
-    """
-    Empty serializer.
-
-    Authentication identifies the current user.
-    """
-
-    pass
+    email = serializers.EmailField()

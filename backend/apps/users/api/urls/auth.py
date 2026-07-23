@@ -41,6 +41,10 @@ from apps.users.api.views.auth.change_email import (
     ConfirmEmailChangeAPIView,
 )
 
+from apps.users.api.views.auth.resend_verification import (
+    ResendVerificationAPIView,
+)
+
 app_name = "auth"
 
 urlpatterns = [
@@ -130,5 +134,11 @@ urlpatterns = [
         "email/change/confirm/",
         ConfirmEmailChangeAPIView.as_view(),
         name="email-change-confirm",
+    ),
+    
+    path(
+        "email/resend/",
+        ResendVerificationAPIView.as_view(),
+        name="email-resend",
     ),
 ]

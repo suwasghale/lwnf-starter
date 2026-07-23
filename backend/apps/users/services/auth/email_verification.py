@@ -28,6 +28,11 @@ from apps.users.models.tokens.email_verification import (
 from apps.users.selectors.auth.email_verification import (
     find_verification_token,
 )
+
+from apps.users.selectors.user import (
+    find_user_by_email,
+)
+
 from apps.users.exceptions.authentication import (
     EmailAlreadyVerified,
     EmailVerificationTokenExpired,
@@ -154,14 +159,25 @@ def verify_email(
 @transaction.atomic
 def resend_email_verification(
     *,
-    user: User,
+    email: str,
     created_ip: str | None,
     user_agent: str,
 ) -> None:
     """
     Send a fresh verification email.
+
+    Always returns successfully to avoid email enumeration.
     """
 
+    user = find_user_by_email(
+        email=email,
+    )
+
+    # Do not reveal whether the account exists.
+    if user is None:
+        return
+
+    # Do not reveal verification status.
     if user.is_verified:
         return
 
