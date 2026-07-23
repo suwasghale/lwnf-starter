@@ -13,3 +13,11 @@ class InvalidPassword(LWNFException):
     """
 
     default_message = "Current password is incorrect."
+
+
+class AccountDeleted(LWNFException):
+    default_message = "This account has been deleted."
+    
+
+class AccountDisabled(LWNFException):
+    default_message = "This account has been disabled."
