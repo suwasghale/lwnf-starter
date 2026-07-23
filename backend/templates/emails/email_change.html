@@ -1,0 +1,60 @@
+{% extends "emails/base.html" %}
+
+{% block title %}
+Confirmation de votre nouvelle adresse e-mail
+{% endblock %}
+
+{% block content %}
+
+<p>Bonjour {{ full_name }},</p>
+
+<p>
+Nous avons reçu une demande de modification de l'adresse e-mail associée à votre compte <strong>L.W.N.F</strong>.
+</p>
+
+<p>
+Pour confirmer cette nouvelle adresse e-mail, cliquez sur le bouton ci-dessous.
+</p>
+
+<p style="margin:40px 0;text-align:center;">
+
+<a href="{{ verification_url }}"
+style="
+display:inline-block;
+padding:14px 32px;
+background:#0f172a;
+color:#ffffff;
+text-decoration:none;
+border-radius:8px;
+font-weight:600;
+font-size:16px;
+">
+
+Confirmer mon adresse e-mail
+
+</a>
+
+</p>
+
+<p>
+Si le bouton ne fonctionne pas, copiez et collez le lien suivant dans votre navigateur :
+</p>
+
+<p style="word-break:break-word;">
+{{ verification_url }}
+</p>
+
+<p>
+Ce lien expirera dans <strong>30 minutes</strong>.
+</p>
+
+<p>
+Si vous n'êtes pas à l'origine de cette demande, ignorez simplement cet e-mail. Votre adresse actuelle restera inchangée.
+</p>
+
+<p>
+Cordialement,<br>
+L'équipe L.W.N.F
+</p>
+
+{% endblock %}

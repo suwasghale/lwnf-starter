@@ -1,0 +1,25 @@
+{% extends "emails/base.txt" %}
+
+{% block title %}
+Confirmation de votre nouvelle adresse e-mail
+{% endblock %}
+
+{% block content %}
+
+Bonjour {{ full_name }},
+
+Nous avons reçu une demande de modification de l'adresse e-mail associée à votre compte L.W.N.F.
+
+Pour confirmer cette nouvelle adresse, utilisez le lien suivant :
+
+{{ verification_url }}
+
+Ce lien expirera dans 30 minutes.
+
+Si vous n'êtes pas à l'origine de cette demande, ignorez simplement cet e-mail.
+
+Cordialement,
+
+L'équipe L.W.N.F
+
+{% endblock %}
