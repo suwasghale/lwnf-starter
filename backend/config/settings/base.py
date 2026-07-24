@@ -16,8 +16,6 @@ Do not place environment-specific settings here.
 ===============================================================================
 """
 
-from pathlib import Path
-
 from config.settings.env import *
 
 # Components
@@ -75,7 +73,6 @@ ROOT_URLCONF = "config.urls"
 WSGI_APPLICATION = "config.wsgi.application"
 
 ASGI_APPLICATION = "config.asgi.application"
-
 
 AUTH_USER_MODEL = "users.User"
 

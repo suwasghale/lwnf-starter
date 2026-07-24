@@ -21,10 +21,28 @@ from config.settings.env import env
 
 USE_CLOUD_STORAGE = env.bool("USE_CLOUD_STORAGE", default=env.bool("DEBUG"))
 
+
+R2_ACCOUNT_ID = env("R2_ACCOUNT_ID")
+R2_ACCESS_KEY_ID = env("R2_ACCESS_KEY_ID")
+R2_SECRET_ACCESS_KEY = env("R2_SECRET_ACCESS_KEY")
+R2_BUCKET_NAME = env("R2_BUCKET_NAME")
+R2_ENDPOINT_URL = env("R2_ENDPOINT_URL")
+
+AWS_ACCESS_KEY_ID = env("R2_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = env("R2_SECRET_ACCESS_KEY")
+AWS_STORAGE_BUCKET_NAME = env("R2_BUCKET_NAME")
+AWS_S3_ENDPOINT_URL = env("R2_ENDPOINT_URL")
+AWS_S3_REGION_NAME = "auto"
+AWS_S3_SIGNATURE_VERSION = "s3v4"
+
+AWS_DEFAULT_ACL = None
+AWS_QUERYSTRING_AUTH = False
+AWS_S3_FILE_OVERWRITE = False
+
 if USE_CLOUD_STORAGE:
     STORAGES = {
         "default": {
-            "BACKEND": "storages.backends.s3.S3Storage",
+            "BACKEND": "core.storage.backends.PublicMediaStorage",
         },
         "staticfiles": {
             "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",

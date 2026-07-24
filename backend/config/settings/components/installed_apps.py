@@ -26,6 +26,7 @@ DJANGO_APPS = [
 
 THIRD_PARTY_APPS = [
     "rest_framework",
+    "storages",
     "drf_spectacular",
     "django_filters",
     "corsheaders",
