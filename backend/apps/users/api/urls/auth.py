@@ -25,7 +25,7 @@ from apps.users.api.views.auth.logout_all import (
     LogoutAllAPIView,
 )
 from apps.users.api.views.auth.me import (
-    CurrentUserAPIView,
+    MeAPIView,
 )
 from apps.users.api.views.auth.change_password import (
     ChangePasswordAPIView,
@@ -98,7 +98,7 @@ urlpatterns = [
 
     path(
         "me/",
-        CurrentUserAPIView.as_view(),
+        MeAPIView.as_view(),
         name="me",
     ),
 
@@ -155,6 +155,12 @@ urlpatterns = [
     DeleteAccountAPIView.as_view(),
     name="account-delete",
     ),
+    
+    path(
+    "me/",
+    MeAPIView.as_view(),
+    name="me",
+    )
     
     
 ]
