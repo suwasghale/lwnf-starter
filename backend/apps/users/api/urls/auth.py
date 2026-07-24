@@ -49,6 +49,10 @@ from apps.users.api.views.auth.delete_account import (
     DeleteAccountAPIView,
 )
 
+from apps.users.api.views.avatar import (
+    AvatarAPIView,
+)
+
 app_name = "auth"
 
 urlpatterns = [
@@ -160,7 +164,13 @@ urlpatterns = [
     "me/",
     MeAPIView.as_view(),
     name="me",
-    )
+    ),
+    
+    path(
+    "me/avatar/",
+    AvatarAPIView.as_view(),
+    name="me-avatar",
+    ),
     
     
 ]

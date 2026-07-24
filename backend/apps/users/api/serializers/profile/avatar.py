@@ -5,10 +5,11 @@ Serializer for avatar uploads.
 from __future__ import annotations
 
 from rest_framework import serializers
+from django.core.files.uploadedfile import UploadedFile
 
 from apps.users.constants import (
     AVATAR_MAX_FILE_SIZE,
-    ALLOWED_AVATAR_CONTENT_TYPES,
+    AVATAR_ALLOWED_CONTENT_TYPES,
 )
 
 
@@ -21,7 +22,10 @@ class AvatarUploadSerializer(serializers.Serializer):
         required=True,
     )
 
-    def validate_avatar(self, value):
+    def validate_avatar(
+    self,
+    value: UploadedFile,
+    ) -> UploadedFile:
         """
         Validate uploaded avatar.
         """
@@ -42,9 +46,9 @@ class AvatarUploadSerializer(serializers.Serializer):
         # Allowed MIME types
         # ---------------------------------------------------------------------
 
-        if value.content_type not in ALLOWED_AVATAR_CONTENT_TYPES:
+        if value.content_type not in AVATAR_ALLOWED_CONTENT_TYPES:
             raise serializers.ValidationError(
-                "Only JPG, JPEG, PNG and WebP images are allowed."
+                "Supported image formats are JPG, JPEG, PNG and WebP."
             )
 
         return value
