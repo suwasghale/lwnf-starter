@@ -28,16 +28,34 @@ PHONE_NUMBER_MAX_LENGTH = 20
 
 BIO_MAX_LENGTH = 1000
 
-PROFILE_IMAGE_UPLOAD_TO = "users/profile-images/"
+# =============================================================================
+# Avatar
+# =============================================================================
 
-PROFILE_IMAGE_MAX_SIZE = 5 * 1024 * 1024  # 5 MB
+AVATAR_UPLOAD_PATH = "media/avatars"
 
-PROFILE_IMAGE_ALLOWED_EXTENSIONS = (
+AVATAR_MAX_FILE_SIZE = 5 * 1024 * 1024  # 5 MB
+
+AVATAR_ALLOWED_EXTENSIONS = (
     "jpg",
     "jpeg",
     "png",
     "webp",
 )
+
+AVATAR_ALLOWED_CONTENT_TYPES = {
+    "image/jpeg",
+    "image/png",
+    "image/webp",
+}
+
+DEFAULT_AVATAR = "defaults/avatar.webp"
+
+AVATAR_OUTPUT_SIZE = (512, 512)
+
+AVATAR_OUTPUT_FORMAT = "WEBP"
+
+AVATAR_OUTPUT_QUALITY = 85
 
 # =============================================================================
 # Address
@@ -89,11 +107,6 @@ PROFILE_CACHE_PREFIX = "profile"
 
 USER_PERMISSIONS_CACHE_PREFIX = "user_permissions"
 
-# =============================================================================
-# File Names
-# =============================================================================
-
-DEFAULT_PROFILE_IMAGE = "defaults/profile.png"
 
 # =============================================================================
 # Regex Patterns
