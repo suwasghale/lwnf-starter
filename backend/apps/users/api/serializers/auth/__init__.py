@@ -11,6 +11,9 @@ from .resend_verification import ResendVerificationSerializer
 
 from .delete_account import DeleteAccountSerializer
 
+from .me import CurrentUserSerializer
+from .update_profile import UpdateProfileSerializer
+
 __all__ = [
     "PasswordResetRequestSerializer",
     "PasswordResetVerifySerializer",
@@ -21,5 +24,8 @@ __all__ = [
     "ResendVerificationSerializer",
     
     "DeleteAccountSerializer",
+    
+    "CurrentUserSerializer",
+    "UpdateProfileSerializer"
     
 ]

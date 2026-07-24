@@ -24,8 +24,9 @@ from core.api.schemas import (
 
 from apps.users.api.serializers.auth import (
     CurrentUserSerializer,
-    UpdateProfileSerializer,
 )
+
+from apps.users.api.serializers.auth import UpdateProfileSerializer
 
 from apps.users.services.auth.me import (
     get_current_user,

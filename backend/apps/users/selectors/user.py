@@ -55,6 +55,20 @@ def find_user_by_email(
     )
 
 
+def get_user_with_profile(
+    *,
+    user_id: UUID,
+) -> User:
+    """
+    Return a user with the related profile loaded.
+    """
+
+    return (
+        User.objects
+        .select_related("profile")
+        .get(id=user_id)
+    )
+
 # =============================================================================
 # Lists
 # =============================================================================
