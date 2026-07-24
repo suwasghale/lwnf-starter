@@ -1,5 +1,5 @@
 """
-Serializers for the Address model.
+Serializer for user addresses.
 """
 
 from __future__ import annotations
@@ -11,11 +11,12 @@ from apps.users.models import Address
 
 class AddressSerializer(serializers.ModelSerializer):
     """
-    Full address representation, used for read, create, and update.
+    User address serializer.
     """
 
     class Meta:
         model = Address
+
         fields = (
             "id",
             "address_type",
@@ -27,7 +28,6 @@ class AddressSerializer(serializers.ModelSerializer):
             "postal_code",
             "country",
             "is_default",
-            "created_at",
-            "updated_at",
         )
-        read_only_fields = ("id", "created_at", "updated_at")
+
+        read_only_fields = fields

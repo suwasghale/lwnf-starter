@@ -12,6 +12,7 @@ from apps.users.selectors.profile import (
     get_profile_by_user,
 )
 
+from apps.users.selectors.user import get_user_with_profile
 
 # =============================================================================
 # Public API
@@ -86,4 +87,6 @@ def update_profile(
             update_fields=profile_fields,
         )
 
-    return user
+    return get_user_with_profile(
+    user_id=user.id,
+        )
