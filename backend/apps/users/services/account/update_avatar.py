@@ -83,7 +83,7 @@ def update_avatar(
     filename = (
         f"{AVATAR_UPLOAD_PATH}/"
         f"{user.id}/"
-        f"{uuid.uuid4().hex}.webp"
+        "avatar.webp"
     )
 
     # -------------------------------------------------------------------------
